@@ -9,14 +9,27 @@ The current workflow is:
 3. Load the latest snapshot into PostgreSQL
 4. Serve the warehouse through the API
 
-## What is in this repository
+## System Architecture
 
-- `api/` contains the FastAPI application, routers, repository layer and response schemas
-- `assets/` contains documentation media and reporting styling configurations
-- `data/` is used for generated outputs such as CSV snapshots which are split into seasons and runs
-- `pipelines/` contains the ETL pipeline, warehouse contract, snapshot exporter and PostgreSQL loader
-- `reports/` is used for generated test reports
-- `tests/` contains pipeline and database smoke tests
+```mermaid
+flowchart LR
+    %% Defining Style Patterns
+    classDef source fill:#fff5f5,stroke:#ff4d4d,stroke-width:2px,color:#333;
+    classDef pipeline fill:#f0f5ff,stroke:#2f54eb,stroke-width:2px,color:#333;
+    classDef storage fill:#e6fffb,stroke:#13c2c2,stroke-width:2px,color:#333;
+    classDef api fill:#f6ffed,stroke:#52c41a,stroke-width:2px,color:#333;
+
+    %% Nodes
+    A[(3rd Party<br/>APIs)]:::source
+    B[ETL Pipeline]:::pipeline
+    C[(PostgreSQL<br/>Data Warehouse)]:::storage
+    D[Local FastAPI<br/>Service Layer]:::api
+
+    %% Connections
+    A -->|Ingest| B
+    B -->|Load & Upsert| C
+    C -->|Query| D
+```
 
 ## Tech Stack
 
@@ -25,6 +38,15 @@ The current workflow is:
 * **API Layer:** FastAPI, Uvicorn
 * **Testing & Quality Reporting:** pytest, pytest-html
 * **Environment & Tooling:** Conda, python-dotenv
+
+## Project Structure
+
+- `api/` contains the FastAPI application, routers, repository layer and response schemas
+- `assets/` contains documentation media and reporting styling configurations
+- `data/` is used for generated outputs such as CSV snapshots which are split into seasons and runs
+- `pipelines/` contains the ETL pipeline, warehouse contract, snapshot exporter and PostgreSQL loader
+- `reports/` is used for generated test reports
+- `tests/` contains pipeline and database smoke tests
 
 ## Requirements
 
@@ -145,28 +167,6 @@ python -m pytest -v --season-id 777 --test-from-snapshot latest --html=reports/d
 ```
 ![Data Quality Dashboard](assets/screenshots/dq1.PNG)
 ![Data Quality Dashboard](assets/screenshots/dq2.PNG)
-
-## Design notes
-
-```mermaid
-flowchart LR
-    %% Defining Style Patterns
-    classDef source fill:#fff5f5,stroke:#ff4d4d,stroke-width:2px,color:#333;
-    classDef pipeline fill:#f0f5ff,stroke:#2f54eb,stroke-width:2px,color:#333;
-    classDef storage fill:#e6fffb,stroke:#13c2c2,stroke-width:2px,color:#333;
-    classDef api fill:#f6ffed,stroke:#52c41a,stroke-width:2px,color:#333;
-
-    %% Nodes
-    A[(3rd Party<br/>APIs)]:::source
-    B[ETL Pipeline]:::pipeline
-    C[(PostgreSQL<br/>Data Warehouse)]:::storage
-    D[Local FastAPI<br/>Service Layer]:::api
-
-    %% Connections
-    A -->|Ingest| B
-    B -->|Load & Upsert| C
-    C -->|Query| D
-```
 
 ## Roadmap
 
