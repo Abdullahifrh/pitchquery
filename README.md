@@ -146,14 +146,6 @@ python -m pytest -v --season-id 777 --test-from-snapshot latest --html=reports/d
 ![Data Quality Dashboard](assets/screenshots/dq1.PNG)
 ![Data Quality Dashboard](assets/screenshots/dq2.PNG)
 
-## Project Structure
-
-* **`api/`** — The FastAPI application layer. Implements clean separation using isolated routers, SQLAlchemy repositories and strict Pydantic response schemas
-* **`pipelines/`** — The ETL engine. Contains the extraction scripts, warehouse schema contracts and the idempotent PostgreSQL upsert logic
-* **`tests/`** — Database smoke tests and data validation 
-* **`data/`** — Localized, physical storage utilized for auditing CSV data snapshots (partitioned cleanly by season and execution run)
-* **`assets/reporting/`** — Custom CSS configurations used to utilize styling into the automated data quality web reports
-
 ## Design notes
 
 ```mermaid
