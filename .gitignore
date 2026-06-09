@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.env
+data/snapshots/*
+!data/snapshots/.gitkeep
+reports/data_quality/*
+!reports/data_quality/.gitkeep
+.DS_Store
+Thumbs.db

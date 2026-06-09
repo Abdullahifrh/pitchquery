@@ -1,0 +1,11 @@
+fastapi>=0.115
+uvicorn>=0.30
+pandas>=2.2
+requests>=2.31
+SQLAlchemy>=2.0
+python-dotenv>=1.0
+psycopg2-binary>=2.9
+pydantic>=2.0
+pytest>=8.0
+pytest-html>=4.0
+tqdm>=4.66
