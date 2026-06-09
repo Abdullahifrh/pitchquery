@@ -1,6 +1,6 @@
-# Premier League Analytics Platform
+# PL Data Engine
 
-A Premier League data platform built around a season-based ETL pipeline, versioned CSV snapshots, a PostgreSQL warehouse and a local FastAPI service for querying teams, players, fixtures and season statistics.
+A Premier League data engine built around a season-based ETL pipeline, versioned CSV snapshots, a PostgreSQL warehouse and a local FastAPI service for querying teams, players, fixtures and season statistics.
 
 The current workflow is:
 
