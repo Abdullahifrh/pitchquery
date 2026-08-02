@@ -124,6 +124,8 @@ data/snapshots/season=2025_26/run=YYYYMMDD_HHMMSS/
 
 Each snapshot contains one CSV per warehouse table plus a `manifest.json` file with row counts and metadata.
 
+**Note:** *The FPL API updates continuously each season. To ensure full end-to-end reproducibility of the 2025–26 transformation pipeline, static raw snapshots for season=2025_26 are preserved in data/snapshots/season=2025_26/*
+
 ## Load the latest snapshot into PostgreSQL
 
 After a successful snapshot has been created, load the newest snapshot into PostgreSQL:
@@ -168,17 +170,22 @@ python -m pytest -v --season-id 777 --test-from-snapshot latest --html=reports/d
 ![Data Quality Dashboard](assets/screenshots/dq1.PNG)
 ![Data Quality Dashboard](assets/screenshots/dq2.PNG)
 
-## Roadmap
+## Future work
 
-Future work plans, in order of priority:
+The next phase of this project focuses on transitioning from a local data engine to an automated, cloud-hosted platform equipped with an intelligent conversational interface.
 
-1. Deploy the API with authentication, validation and rate limiting
-2. Add CI/CD so tests and packaging run automatically on every change
-3. Add Docker and docker-compose for reproducible local and deployment environments
-4. Add monitoring, structured logging and health checks
-5. Add incremental loading for the next live season
-6. Add automated scheduling/orchestration once the season starts updating again
-7. Expand observability with run metadata, failure logging and alerts
+### 1. Enterprise Knowledge Access (Agentic RAG & Web App)
+* **Agentic RAG Architecture:** Develop a RAG system capable of querying across relational PostgreSQL tables and structured historical context to deliver grounded, context-aware answers about player and team performance.
+* **Interactive Frontend:** Build a web application interface allowing users to ask natural-language questions across both historical snapshots and live gameweek stats.
+
+### 2. Automated Orchestration & Live Ingestion
+* **Scheduled Data Pipelines:** Implement automated orchestration (e.g., Prefect or Apache Airflow) to trigger incremental ETL runs aligned with Premier League matchday schedules.
+* **Incremental Delta Loading:** Support live-season gameweek updates without full re-ingestion of historical data.
+
+### 3. Cloud Infrastructure & Production DevOps
+* **Containerization & Deployment:** Package services using Docker and `docker-compose` to deploy the database and FastAPI service to cloud infrastructure.
+* **API Hardening:** Implement authentication, request validation and rate limiting for secure public access.
+* **CI/CD & Observability:** Automate testing and deployment via GitHub Actions and integrate structured logging, health checks and run metadata tracking.
 
 ## License
 
