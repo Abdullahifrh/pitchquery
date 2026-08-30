@@ -5,8 +5,6 @@ __pycache__/
 htmlcov/
 .env
 data/snapshots/*
-!data/snapshots/season=2025_26/
-reports/data_quality/*
-!reports/data_quality/.gitkeep
+.vscode/
 .DS_Store
 Thumbs.db
