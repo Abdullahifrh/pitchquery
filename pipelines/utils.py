@@ -2,7 +2,6 @@ import re
 import pandas as pd
 from sqlalchemy import (Integer, String, Float, Boolean, Date, DateTime)
 
-
 SHOT_EVENT_TYPES = {
     "goal",
     "penalty goal",
@@ -27,6 +26,8 @@ MATCH_EVENT_PRIORITY = {
 
 TEAM_SUB_RE = re.compile(r"^\s*substitution\s*,\s*([^\.]+?)\s*(?:\.|$)", re.IGNORECASE)
 TEAM_PAREN_RE = re.compile(r"\(([^)]+)\)")
+# Own-goal commentary has no parenthesized team name, unlike every other event type.
+TEAM_OWN_GOAL_RE = re.compile(r"own goal by [^,]+,\s*([^.]+?)\s*\.", re.IGNORECASE)
 
 TEAM_MATCH_ENDPOINT_COLS = [
     "formation_used",
@@ -227,7 +228,6 @@ def normalize_text(value) -> str:
     text = re.sub(r"[^a-z0-9]+", " ", text)
     return re.sub(r"\s+", " ", text).strip()
 
-
 def extract_textstream_events(payload) -> list[dict]:
     if isinstance(payload, list):
         return payload
@@ -245,7 +245,6 @@ def extract_textstream_events(payload) -> list[dict]:
         return content
 
     return []
-
 
 def format_minute(raw_value) -> str | None:
     if raw_value is None:
@@ -272,7 +271,6 @@ def format_minute(raw_value) -> str | None:
 
     return text
 
-
 def minute_sort_key(minute_text: str | None) -> tuple[int, int]:
     if minute_text is None:
         return (10**9, 0)
@@ -289,6 +287,18 @@ def minute_sort_key(minute_text: str | None) -> tuple[int, int]:
 
     return (10**9, 0)
 
+def parse_minute_components(minute_display: str | None) -> tuple[int | None, bool]:
+    """Returns (total_minute, is_stoppage_time) from a display-formatted minute string,
+    reusing minute_sort_key's (base, added) parsing so the two never drift out of sync.
+    """
+    base, added = minute_sort_key(minute_display)
+    if base >= 10**9:
+        return None, False
+    return base + added, added > 0
+
+def parse_pulse_birth_date(date_of_birth) -> pd.Timestamp | None:
+    """Parses Pulse's free-text birth-date label ("29 April 2005") into a real date."""
+    return pd.to_datetime(date_of_birth, format="%d %B %Y", errors="coerce")
 
 def clean_player_id(value, known_player_ids: set[int]) -> int | None:
     if value is None:
@@ -305,7 +315,6 @@ def clean_player_id(value, known_player_ids: set[int]) -> int | None:
         return None
 
     return pid if pid in known_player_ids else None
-
 
 def build_fixture_team_alias_map(
     dim_teams: pd.DataFrame,
@@ -327,7 +336,6 @@ def build_fixture_team_alias_map(
 
     return alias_to_team_id
 
-
 def resolve_team_id_from_text(text: str, alias_to_team_id: dict[str, int]) -> int | None:
     text_norm = normalize_text(text)
     if not text_norm:
@@ -339,8 +347,11 @@ def resolve_team_id_from_text(text: str, alias_to_team_id: dict[str, int]) -> in
 
     return None
 
-
 def infer_event_team_id(ev_type: str, text: str, alias_to_team_id: dict[str, int]) -> int | None:
+    """Returns the team named in this event's text. For own goals that's the *conceding*
+    team, not the team credited on the scoreboard — the caller flips it (see
+    pipelines/transform/fixtures.py's own-goal branches).
+    """
     ev_type_norm = normalize_text(ev_type)
     text = text or ""
 
@@ -350,15 +361,19 @@ def infer_event_team_id(ev_type: str, text: str, alias_to_team_id: dict[str, int
             return None
         return resolve_team_id_from_text(match.group(1).strip(), alias_to_team_id)
 
+    if "own goal" in ev_type_norm:
+        match = TEAM_OWN_GOAL_RE.search(text)
+        if not match:
+            return None
+        return resolve_team_id_from_text(match.group(1).strip(), alias_to_team_id)
+
     match = TEAM_PAREN_RE.search(text)
     if not match:
         return None
     return resolve_team_id_from_text(match.group(1).strip(), alias_to_team_id)
 
-
 def match_event_priority(event_type: str) -> int:
     return MATCH_EVENT_PRIORITY.get(event_type, 9)
-
 
 def infer_shot_outcome(event_type_l: str) -> str | None:
     if event_type_l == "own goal":
@@ -374,7 +389,6 @@ def infer_shot_outcome(event_type_l: str) -> str | None:
     if event_type_l in {"goal", "penalty goal"}:
         return "Goal"
     return None
-
 
 def infer_shot_type(event_type_l: str, text_lc: str) -> str:
     if event_type_l == "own goal" or "own goal" in text_lc:
@@ -393,7 +407,6 @@ def infer_shot_type(event_type_l: str, text_lc: str) -> str:
 
     return "Open Play"
 
-
 def infer_body_part(text_lc: str) -> str | None:
     if "right footed shot" in text_lc or "right-footed" in text_lc or "right foot" in text_lc:
         return "Right Foot"
@@ -404,7 +417,6 @@ def infer_body_part(text_lc: str) -> str | None:
     if "volley" in text_lc:
         return "Volley"
     return None
-
 
 def infer_distance(text_lc: str) -> str | None:
     if (
@@ -436,7 +448,6 @@ def infer_distance(text_lc: str) -> str | None:
 
     return None
 
-
 def age_at_date(date_of_birth, reference_dt) -> int | None:
     dob = pd.to_datetime(date_of_birth, errors="coerce")
     ref = pd.to_datetime(reference_dt, utc=True, errors="coerce")
@@ -444,43 +455,61 @@ def age_at_date(date_of_birth, reference_dt) -> int | None:
         return None
     return int(ref.year - dob.year - ((ref.month, ref.day) < (dob.month, dob.day)))
 
-def extract_squad_players(payload) -> list[dict]:
-    if isinstance(payload, list):
-        return payload
-    if not isinstance(payload, dict):
-        return []
+SEASON_LABEL_RE = re.compile(r"(\d{4})\s*[/\-]\s*(\d{2,4})")
 
-    for key in ("players", "squad", "content"):
-        value = payload.get(key)
-        if isinstance(value, list):
-            return value
+def _parse_season_year_range(season_label: str) -> tuple[str, str]:
+    """Extract (start_year, end_year_2digit) from any Pulse season label — concise
+    ('2025/26') or verbose ('English Premier League Season 2026/2027'). Raises
+    ValueError if no YYYY[/-]YY(YY) pattern is found, rather than silently guessing.
+    """
+    match = SEASON_LABEL_RE.search(season_label)
+    if not match:
+        raise ValueError(
+            f"Could not parse a season year range out of label: {season_label!r} "
+            f"(expected a 'YYYY/YY' or 'YYYY/YYYY' pattern somewhere in the string)"
+        )
+    start_year, end_part = match.group(1), match.group(2)
+    end_year_2digit = end_part[-2:] if len(end_part) == 4 else end_part.zfill(2)
+    return start_year, end_year_2digit
 
-    return []
+def parse_season_slug(season_label: str) -> str:
+    """Normalize any Pulse season label to a 'YYYY_YY' slug (e.g. for snapshot folder names)."""
+    start_year, end_year_2digit = _parse_season_year_range(season_label)
+    return f"{start_year}_{end_year_2digit}"
 
-
-def extract_birth_date_label(player: dict) -> str | None:
-    birth = player.get("birth") or {}
-    if isinstance(birth, dict):
-        date_block = birth.get("date") or {}
-        if isinstance(date_block, dict):
-            label = date_block.get("label")
-            if label:
-                return str(label).strip()
-
-    for key in ("birth_date", "birthDate"):
-        value = player.get(key)
-        if value:
-            return str(value).strip()
-
-    return None
+def parse_season_label(season_label: str) -> str:
+    """Normalize any Pulse season label to the canonical 'YYYY/YY' form for dim_seasons.season_name."""
+    start_year, end_year_2digit = _parse_season_year_range(season_label)
+    return f"{start_year}/{end_year_2digit}"
 
 def print_frame_summary(name: str, df: pd.DataFrame) -> None:
     print(f"{name}: {len(df)} rows x {len(df.columns)} cols")
 
+# Every ID column ends in "_id" except these three genuinely-text synthetic
+# keys — shared invariant for coerce_id_columns and map_pandas_to_sqlalchemy below.
+STRING_ID_COLUMN_NAMES = {"match_event_id", "shot_event_id", "bridge_player_season_id"}
+
+def coerce_id_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """Restores every genuinely-integer *_id column to pandas' nullable Int64 dtype after
+    a CSV round-trip (pd.read_csv() silently upcasts an integer column with any missing
+    value to float64).
+    """
+    out = df.copy()
+    for col in out.columns:
+        if col.endswith("_id") and col not in STRING_ID_COLUMN_NAMES:
+            out[col] = pd.to_numeric(out[col], errors="coerce").astype("Int64")
+    return out
+
 def map_pandas_to_sqlalchemy(col_name: str, series: pd.Series):
 
     if pd.api.types.is_integer_dtype(series): return Integer
-    if pd.api.types.is_float_dtype(series): return Float
+    if pd.api.types.is_float_dtype(series):
+        # Defense-in-depth on top of coerce_id_columns — a still-float *_id column
+        # is treated as Integer rather than emitting a DOUBLE PRECISION FK mismatch.
+        name = col_name.lower()
+        if name.endswith("_id") and name not in STRING_ID_COLUMN_NAMES:
+            return Integer
+        return Float
     if pd.api.types.is_bool_dtype(series): return Boolean
 
     name = col_name.lower()

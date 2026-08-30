@@ -4,13 +4,11 @@ from typing import Any
 import pandas as pd
 from pipelines.schema import SCHEMA_VERSION, materialize_frames, snapshot_season_slug
 
-
 def timestamp_run_id() -> str:
     ts = pd.Timestamp.utcnow()
     if ts.tzinfo is None:
         ts = ts.tz_localize("UTC")
     return ts.strftime("%Y%m%d_%H%M%S")
-
 
 def export_csv_snapshot(
     frames: dict[str, pd.DataFrame],
