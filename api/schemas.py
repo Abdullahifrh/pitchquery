@@ -8,13 +8,11 @@ class HealthOut(BaseModel):
     latest_season_name: str | None = None
     tables: dict[str, int]
 
-
 class TeamOut(BaseModel):
     team_id: int
     team_name: str | None = None
     short_name: str | None = None
     team_logo_url: str | None = None
-
 
 class PlayerOut(BaseModel):
     player_id: int
@@ -22,7 +20,6 @@ class PlayerOut(BaseModel):
     date_of_birth: date | None = None
     country: str | None = None
     player_photo_url: str | None = None
-
 
 class FixtureOut(BaseModel):
     fixture_id: int
