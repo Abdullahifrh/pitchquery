@@ -1,0 +1,666 @@
+bridge_player_season_id,player_id,season_id,team_id,position,position_info,shirt_number,age,transfer_sequence
+2100_1,2100,777,131,M,Left/Centre/Right Central Midfielder,20,39,1
+2896_1,2896,777,23,G,Goalkeeper,26,38,1
+2933_1,2933,777,12,G,Goalkeeper,22,39,1
+3170_1,3170,777,127,G,Goalkeeper,17,37,1
+3309_1,3309,777,25,G,Goalkeeper,22,40,1
+3452_1,3452,777,131,F,Centre Striker,18,34,1
+3457_1,3457,777,131,G,Goalkeeper,23,34,1
+3512_1,3512,777,127,D,Right Full Back,15,34,1
+3600_1,3600,777,7,D,Right Full Back,23,36,1
+3712_1,3712,777,130,M,Centre Central Midfielder,6,35,1
+3756_1,3756,777,15,F,Forward,11,33,1
+3894_1,3894,777,34,M,Left/Centre/Right Attacking Midfielder,10,34,1
+3905_1,3905,777,23,D,Right Full Back,2,34,1
+3955_1,3955,777,43,D,Right Full Back,2,35,1
+4115_1,4115,777,2,M,Centre Central Midfielder,6,31,1
+4229_1,4229,777,38,D,Right Full Back,2,33,1
+4245_1,4245,777,2,G,Goalkeeper,23,33,1
+4260_1,4260,777,7,M,Attacking Midfielder,18,29,1
+4331_1,4331,777,38,G,Goalkeeper,31,32,1
+4333_1,4333,777,7,D,Centre Central Defender,5,32,1
+4408_1,4408,777,21,D,Left Full Back,33,32,1
+4499_1,4499,777,11,D,Left/Centre Central Defender,6,30,1
+4505_1,4505,777,11,D,Centre Central Defender,5,31,1
+4511_1,4511,777,11,G,Goalkeeper,13,33,1
+4604_1,4604,777,6,D,Right Full Back,17,34,1
+4608_1,4608,777,12,D,Left Full Back,23,30,1
+4617_1,4617,777,25,M,Centre Central Midfielder,20,30,1
+4617_2,4617,777,43,M,Centre Central Midfielder,20,31,2
+4640_1,4640,777,7,G,Goalkeeper,1,31,1
+4717_1,4717,777,34,F,Left/Centre/Right Second Striker,17,29,1
+4727_1,4727,777,29,G,Goalkeeper,21,35,1
+4818_1,4818,777,34,M,Centre Central Midfielder,6,30,1
+4874_1,4874,777,131,D,Centre/Right Full Back,34,33,1
+4880_1,4880,777,34,D,Right Full Back,2,29,1
+4979_1,4979,777,34,F,Right Winger,17,29,1
+4979_2,4979,777,25,F,Right Winger,17,30,2
+4985_1,4985,777,34,G,Goalkeeper,1,33,1
+5066_1,5066,777,2,D,Centre Central Defender,3,31,1
+5067_1,5067,777,11,M,Left/Centre Attacking Midfielder,20,31,1
+5140_1,5140,777,10,D,Centre Central Defender,4,34,1
+5178_1,5178,777,10,F,Left/Centre/Right Winger,11,33,1
+5220_1,5220,777,23,D,Defender,5,33,1
+5748_1,5748,777,25,G,Goalkeeper,23,32,1
+5758_1,5758,777,2,D,Left Full Back,12,32,1
+5793_1,5793,777,12,M,Centre Central Midfielder,18,33,1
+5865_1,5865,777,2,M,Centre Central Midfielder,8,28,1
+6451_1,6451,777,43,G,Goalkeeper,1,37,1
+6712_1,6712,777,34,D,Right Full Back,21,29,1
+7975_1,7975,777,1,G,Goalkeeper,1,29,1
+8127_1,8127,777,43,M,Central Midfielder,29,30,1
+8143_1,8143,777,7,D,Centre Central Defender,6,32,1
+8163_1,8163,777,131,D,Defender,30,33,1
+8171_1,8171,777,131,M,Right Winger,7,31,1
+8246_1,8246,777,43,F,Striker,35,35,1
+8321_1,8321,777,23,G,Goalkeeper,29,33,1
+8454_1,8454,777,25,F,Striker,9,33,1
+8456_1,8456,777,21,M,Left/Centre/Right Attacking Midfielder,10,29,1
+8589_1,8589,777,6,M,Centre Central Midfielder,19,30,1
+8658_1,8658,777,2,F,Left/Centre/Right Second Striker,11,29,1
+8707_1,8707,777,23,D,Centre Central Defender,33,33,1
+8868_1,8868,777,25,F,Centre Striker,20,28,1
+8900_1,8900,777,2,D,Centre Central Defender,5,32,1
+8938_1,8938,777,9,G,Goalkeeper,21,32,1
+8945_1,8945,777,9,D,Right Full Back,25,31,1
+9199_1,9199,777,38,F,Centre Striker,9,28,1
+9251_1,9251,777,9,G,Goalkeeper,26,35,1
+9257_1,9257,777,23,D,Central Defender,24,,1
+9566_1,9566,777,12,D,Centre Central Defender,5,32,1
+9576_1,9576,777,9,F,Striker,9,28,1
+9662_1,9662,777,23,M,Left/Right Winger,14,30,1
+10079_1,10079,777,23,G,Goalkeeper,1,33,1
+10361_1,10361,777,29,M,Centre Central Midfielder,13,31,1
+10394_1,10394,777,29,F,Left/Right Winger,25,30,1
+10439_1,10439,777,15,D,Right Full Back,34,28,1
+10443_1,10443,777,21,F,Striker,19,27,1
+10458_1,10458,777,10,D,Left Full Back,26,31,1
+10479_1,10479,777,10,G,Goalkeeper,28,29,1
+10539_1,10539,777,43,M,Centre Central Midfielder,24,29,1
+10651_1,10651,777,10,D,Left/Centre/Right Central Defender,2,28,1
+10766_1,10766,777,127,M,Centre Central Midfielder,4,28,1
+10801_1,10801,777,7,G,Goalkeeper,31,30,1
+10947_1,10947,777,130,D,Left Full Back,3,28,1
+11071_1,11071,777,34,F,Striker,7,34,1
+11284_1,11284,777,29,D,Left Full Back,26,,1
+11373_1,11373,777,1,G,Goalkeeper,13,30,1
+11419_1,11419,777,1,M,Left/Centre/Right Attacking Midfielder,8,26,1
+12136_1,12136,777,29,M,Central Defender,34,32,1
+12520_1,12520,777,11,M,Centre Central Midfielder,8,31,1
+12582_1,12582,777,7,M,Centre Defensive Midfielder,27,35,1
+13274_1,13274,777,2,D,Centre Central Defender,4,27,1
+13286_1,13286,777,2,F,Centre Striker,18,28,1
+13344_1,13344,777,2,D,Right Full Back,2,28,1
+13515_1,13515,777,9,D,Defender,24,27,1
+13522_1,13522,777,25,D,Left/Centre Central Defender,3,28,1
+13549_1,13549,777,4,D,Centre Central Defender,4,27,1
+13559_1,13559,777,43,D,Right Full Back,6,28,1
+13622_1,13622,777,43,D,Centre Central Defender,4,28,1
+13703_1,13703,777,23,G,Goalkeeper,32,27,1
+13706_1,13706,777,127,M,Left/Centre/Right Attacking Midfielder,36,28,1
+13796_1,13796,777,9,D,Central Defender,6,27,1
+13797_1,13797,777,9,M,Left/Right Winger,7,27,1
+13815_1,13815,777,25,D,Left/Right Full Back,2,28,1
+13917_1,13917,777,9,D,Right Full Back,33,29,1
+13961_1,13961,777,34,F,Left/Right Winger,8,28,1
+13988_1,13988,777,6,G,Goalkeeper,1,28,1
+14164_1,14164,777,25,D,Right Full Back,29,27,1
+14238_1,14238,777,15,M,Left/Centre/Right Attacking Midfielder,22,27,1
+14445_1,14445,777,34,M,Centre Attacking Midfielder,32,25,1
+14446_1,14446,777,23,M,Centre Attacking Midfielder,28,26,1
+14450_1,14450,777,130,F,Striker,11,25,1
+14451_1,14451,777,6,F,Centre Striker,9,26,1
+14456_1,14456,777,2,F,Striker,14,26,1
+14457_1,14457,777,130,M,Midfielder,10,27,1
+14538_1,14538,777,4,G,Goalkeeper,1,27,1
+14548_1,14548,777,1,D,Centre/Right Central Defender,4,27,1
+14569_1,14569,777,6,D,Centre Central Defender,15,25,1
+14569_2,14569,777,11,D,Centre Central Defender,15,25,2
+14571_1,14571,777,4,D,Right Full Back,24,25,1
+14575_1,14575,777,4,D,Centre Central Defender,27,26,1
+14580_1,14580,777,12,M,Centre Attacking Midfielder,7,26,1
+14608_1,14608,777,9,D,Right Full Back,2,25,1
+14624_1,14624,777,34,D,Left Full Back,33,28,1
+14656_1,14656,777,34,M,Left/Right Winger,30,25,1
+14671_1,14671,777,131,M,Midfielder,17,24,1
+14706_1,14706,777,7,M,Central Midfielder,22,26,1
+14716_1,14716,777,23,M,Left/Right Winger,11,27,1
+14723_1,14723,777,130,G,Goalkeeper,1,26,1
+14801_1,14801,777,2,F,Left/Right Winger,19,25,1
+14805_1,14805,777,11,M,Centre/Right Attacking Midfielder,47,25,1
+14807_1,14807,777,9,F,Striker,14,26,1
+14830_1,14830,777,38,M,Centre Attacking Midfielder,47,25,1
+14846_1,14846,777,127,M,Midfielder,16,26,1
+14897_1,14897,777,9,M,Central Midfielder,8,27,1
+15114_1,15114,777,21,G,Goalkeeper,49,26,1
+15139_1,15139,777,43,F,Right Winger,10,26,1
+15202_1,15202,777,1,M,Centre Central Midfielder,41,26,1
+15259_1,15259,777,15,M,Centre Central Midfielder,10,25,1
+15269_1,15269,777,15,G,Goalkeeper,18,30,1
+15340_1,15340,777,15,F,Centre Striker,9,28,1
+15572_1,15572,777,127,M,Left/Centre/Right Attacking Midfielder,10,30,1
+15715_1,15715,777,38,G,Goalkeeper,1,32,1
+15802_1,15802,777,10,F,Left/Centre/Right Winger,14,27,1
+16035_1,16035,777,15,D,Centre Central Defender,31,27,1
+16044_1,16044,777,34,M,Central Midfielder,20,29,1
+16169_1,16169,777,43,G,Goalkeeper,32,34,1
+16204_1,16204,777,15,D,Centre Central Defender,30,34,1
+16286_1,16286,777,11,M,Centre Central Midfielder,16,29,1
+16431_1,16431,777,11,D,Centre Central Defender,3,28,1
+16582_1,16582,777,127,F,Centre Striker,26,28,1
+16723_1,16723,777,15,G,Goalkeeper,26,33,1
+16788_1,16788,777,6,F,Centre Striker,11,,1
+19620_1,19620,777,15,D,Left Full Back,35,,1
+19680_1,19680,777,1,F,Second Striker,9,28,1
+19731_1,19731,777,9,D,Central Defender,4,24,1
+19778_1,19778,777,1,M,Centre Central Midfielder,23,29,1
+19831_1,19831,777,43,F,Left Winger,7,26,1
+19858_1,19858,777,21,M,Defensive Midfielder,6,30,1
+19864_1,19864,777,29,D,Centre Central Defender,5,25,1
+19888_1,19888,777,23,M,Left/Centre Winger,41,24,1
+19919_1,19919,777,10,D,Right Full Back,30,24,1
+20077_1,20077,777,29,D,Defender,51,19,1
+20113_1,20113,777,130,D,Centre Central Defender,20,27,1
+20118_1,20118,777,6,D,Left Full Back,24,27,1
+20226_1,20226,777,12,D,Centre Central Defender,4,26,1
+20337_1,20337,777,38,F,Centre Striker,11,29,1
+20473_1,20473,777,2,G,Goalkeeper,40,34,1
+20486_1,20486,777,1,F,Left Winger,19,30,1
+20489_1,20489,777,2,F,Right Winger,31,28,1
+20497_1,20497,777,6,G,Goalkeeper,44,32,1
+20505_1,20505,777,131,D,Central Defender,21,28,1
+20559_1,20559,777,10,G,Goalkeeper,1,33,1
+20607_1,20607,777,23,M,Left Central Midfielder,7,29,1
+20810_1,20810,777,1,F,Left/Centre/Right Second Striker,29,26,1
+20874_1,20874,777,6,F,Centre Striker,14,28,1
+21317_1,21317,777,130,G,Goalkeeper,35,25,1
+21519_1,21519,777,127,F,Left/Right Winger,19,26,1
+21529_1,21529,777,2,D,Central Defender,14,28,1
+21584_1,21584,777,6,M,Centre Attacking Midfielder,10,27,1
+21584_2,21584,777,1,M,Centre Attacking Midfielder,10,27,2
+21614_1,21614,777,34,M,Centre Central Midfielder,16,27,1
+21737_1,21737,777,10,F,Centre Striker,9,25,1
+21887_1,21887,777,21,M,Central Midfielder,22,25,1
+21912_1,21912,777,25,D,Centre Central Defender,5,27,1
+21998_1,21998,777,4,F,Left/Right Winger,7,25,1
+22043_1,22043,777,130,D,Left/Centre Central Defender,5,32,1
+22542_1,22542,777,131,M,Centre Central Midfielder,30,34,1
+22802_1,22802,777,21,M,Centre Central Midfielder,30,28,1
+22857_1,22857,777,11,G,Goalkeeper,25,26,1
+23194_1,23194,777,130,M,Centre Defensive Midfielder,27,27,1
+23396_1,23396,777,12,M,Left/Centre/Right Attacking Midfielder,8,30,1
+23581_1,23581,777,12,D,Left Full Back,3,26,1
+23593_1,23593,777,10,D,Centre Central Defender,5,26,1
+23702_1,23702,777,15,F,Left Winger,7,24,1
+23747_1,23747,777,23,F,Winger,10,24,1
+23764_1,23764,777,21,D,Right Full Back,39,25,1
+23793_1,23793,777,34,D,Left Full Back,3,25,1
+23811_1,23811,777,15,D,Right Full Back,3,24,1
+23815_1,23815,777,10,M,Centre Central Midfielder,48,24,1
+23841_1,23841,777,7,M,Centre Central Midfielder,37,24,1
+23968_1,23968,777,2,F,Left Winger,27,23,1
+24252_1,24252,777,12,D,Right Full Back,5,26,1
+24334_1,24334,777,6,D,Left Full Back,39,25,1
+24369_1,24369,777,130,F,Striker,23,24,1
+24626_1,24626,777,15,M,Centre Central Midfielder,21,27,1
+24626_2,24626,777,2,M,Centre Central Midfielder,21,27,2
+24630_1,24630,777,21,F,Left/Centre/Right Second Striker,9,28,1
+24659_1,24659,777,130,D,Centre Central Defender,22,24,1
+24797_1,24797,777,7,F,Left Winger,7,25,1
+24983_1,24983,777,7,D,Left Full Back,16,26,1
+25067_1,25067,777,2,M,Centre Defensive Midfielder,44,25,1
+25183_1,25183,777,25,M,Centre Defensive Midfielder,28,30,1
+25408_1,25408,777,29,D,Defender,6,25,1
+25474_1,25474,777,127,F,Left/Right Winger,42,25,1
+25474_2,25474,777,11,F,Left/Right Winger,42,26,2
+25892_1,25892,777,21,D,Centre Central Defender,4,26,1
+26151_1,26151,777,34,D,Centre Central Defender,5,29,1
+26335_1,26335,777,11,M,Centre Central Midfielder,4,27,1
+26408_1,26408,777,2,M,Attacking Midfielder,16,28,1
+27277_1,27277,777,4,D,Left Wing Back,3,27,1
+31442_1,31442,777,43,F,Striker,27,24,1
+31936_1,31936,777,7,F,Left Winger,10,25,1
+32229_1,32229,777,21,D,Right Full Back,23,25,1
+32280_1,32280,777,11,G,Goalkeeper,1,22,1
+32289_1,32289,777,130,M,Left/Centre/Right Attacking Midfielder,14,22,1
+32638_1,32638,777,25,D,Centre Central Defender,15,27,1
+32728_1,32728,777,1,F,Striker,14,27,1
+32894_1,32894,777,10,F,Centre Striker,18,26,1
+33032_1,33032,777,127,F,Centre Striker,9,25,1
+33124_1,33124,777,9,D,Centre Central Defender,5,26,1
+33162_1,33162,777,9,F,Winger,19,25,1
+33185_1,33185,777,10,M,Left/Centre/Right Attacking Midfielder,9,22,1
+33185_2,33185,777,2,M,Left/Centre/Right Attacking Midfielder,9,22,2
+33231_1,33231,777,10,M,Left/Centre/Right Attacking Midfielder,8,24,1
+33245_1,33245,777,12,D,Right Full Back,3,27,1
+35670_1,35670,777,38,F,Striker,22,25,1
+35670_2,35670,777,6,F,Striker,22,26,2
+35699_1,35699,777,43,D,Centre Central Defender,36,25,1
+35718_1,35718,777,9,D,Central Defender,23,26,1
+35731_1,35731,777,29,M,Midfielder,6,23,1
+35752_1,35752,777,34,D,Central Defender,15,25,1
+37776_1,37776,777,6,M,Centre Central Midfielder,8,30,1
+40159_1,40159,777,25,M,Centre Defensive Midfielder,24,,1
+40211_1,40211,777,25,M,Midfielder,11,27,1
+42331_1,42331,777,1,M,Defensive Midfielder,16,31,1
+42569_1,42569,777,25,F,Centre Striker,11,,1
+42894_1,42894,777,127,M,Midfielder,12,26,1
+43010_1,43010,777,38,D,Defender,5,26,1
+43586_1,43586,777,10,M,Centre Defensive Midfielder,3,32,1
+47133_1,47133,777,15,G,Goalkeeper,27,32,1
+49259_1,49259,777,23,F,Left Winger,20,23,1
+49270_1,49270,777,15,M,Centre/Right Attacking Midfielder,24,22,1
+49293_1,49293,777,4,M,Attacking Midfielder,10,23,1
+49316_1,49316,777,21,M,Right Winger,21,25,1
+49374_1,49374,777,21,F,Centre Striker,11,24,1
+49374_2,49374,777,6,F,Centre Striker,11,24,2
+49481_1,49481,777,1,F,Left Winger,77,23,1
+49494_1,49494,777,130,M,Attacking Midfielder,44,,1
+49495_1,49495,777,23,D,Right Full Back,21,22,1
+49726_1,49726,777,130,M,Centre Central Midfielder,8,29,1
+49731_1,49731,777,130,M,Left/Centre Attacking Midfielder,24,25,1
+49759_1,49759,777,6,M,Centre Attacking Midfielder,18,29,1
+49796_1,49796,777,6,F,Right Winger,7,27,1
+49884_1,49884,777,34,D,Centre Central Defender,31,28,1
+49908_1,49908,777,23,D,Central Defender,4,25,1
+49909_1,49909,777,10,M,Centre Central Midfielder,38,23,1
+50151_1,50151,777,9,D,Central Defender,15,26,1
+50234_1,50234,777,1,D,Centre Central Defender,6,27,1
+50245_1,50245,777,21,M,Centre Central Midfielder,8,29,1
+50453_1,50453,777,7,G,Goalkeeper,12,26,1
+50460_1,50460,777,43,F,Left Winger,11,25,1
+50623_1,50623,777,15,F,Left/Right Winger,14,24,1
+50643_1,50643,777,9,F,Centre Striker,10,26,1
+50727_1,50727,777,131,D,Left Wing Back,24,25,1
+50842_1,50842,777,6,D,Centre Central Defender,26,25,1
+50848_1,50848,777,12,F,Centre Striker,11,24,1
+51185_1,51185,777,21,F,Centre Striker,39,26,1
+51199_1,51199,777,29,D,Right Full Back,20,27,1
+51202_1,51202,777,12,F,Left/Centre Second Striker,10,26,1
+51223_1,51223,777,2,D,Left Full Back,22,23,1
+51229_1,51229,777,4,D,Centre Central Defender,6,23,1
+51364_1,51364,777,21,M,Midfielder,20,25,1
+51423_1,51423,777,2,M,Centre Central Midfielder,7,30,1
+51498_1,51498,777,43,D,Centre Central Defender,12,22,1
+51593_1,51593,777,15,M,Centre Central Midfielder,8,22,1
+51609_1,51609,777,29,D,Left Full Back,3,23,1
+51610_1,51610,777,29,F,Right Winger,14,22,1
+51813_1,51813,777,4,F,Centre Striker,9,22,1
+51830_1,51830,777,131,F,Centre Striker,10,23,1
+51942_1,51942,777,127,D,Centre Central Defender,4,23,1
+52951_1,52951,777,38,D,Defender,12,,1
+52989_1,52989,777,29,F,Centre Striker,18,24,1
+53063_1,53063,777,34,F,Left/Right Winger,19,26,1
+53612_1,53612,777,4,D,Centre Central Defender,5,24,1
+53991_1,53991,777,4,M,Left Winger,10,24,1
+54156_1,54156,777,11,F,Left/Right Winger,11,23,1
+54893_1,54893,777,25,D,Centre Central Defender,4,27,1
+54989_1,54989,777,127,D,Centre Central Defender,5,28,1
+55776_1,55776,777,25,M,Centre Attacking Midfielder,10,,1
+63257_1,63257,777,25,F,Striker,11,27,1
+63289_1,63289,777,9,M,Centre Attacking Midfielder,7,24,1
+63553_1,63553,777,127,M,Centre Attacking Midfielder,20,25,1
+63633_1,63633,777,10,M,Left/Centre/Right Attacking Midfielder,10,26,1
+63634_1,63634,777,9,G,Goalkeeper,1,27,1
+63656_1,63656,777,25,D,Centre Central Defender,25,25,1
+63733_1,63733,777,29,D,Left Full Back,17,31,1
+63741_1,63741,777,4,M,Midfielder,8,24,1
+63851_1,63851,777,43,M,Centre Defensive Midfielder,16,26,1
+64145_1,64145,777,23,G,Goalkeeper,,21,1
+64282_1,64282,777,43,F,Centre Striker,9,24,1
+64328_1,64328,777,4,G,Goalkeeper,1,21,1
+64523_1,64523,777,1,M,Defensive Midfielder,36,26,1
+65961_1,65961,777,25,F,Left Winger,7,23,1
+65970_1,65970,777,11,F,Centre Striker,9,25,1
+65987_1,65987,777,130,D,Centre Central Defender,4,23,1
+66036_1,66036,777,12,F,Striker,30,22,1
+66104_1,66104,777,1,F,Left Winger,11,24,1
+66204_1,66204,777,1,D,Central Defender,2,24,1
+66284_1,66284,777,4,D,Centre Central Defender,29,24,1
+66318_1,66318,777,7,D,Defender,32,23,1
+66360_1,66360,777,12,F,Right Winger,19,26,1
+66494_1,66494,777,23,D,Right Full Back,17,31,1
+66538_1,66538,777,7,M,Centre Central Midfielder,42,22,1
+66560_1,66560,777,25,M,Defensive Midfielder,8,21,1
+66570_1,66570,777,21,F,Centre Striker,44,,1
+66578_1,66578,777,7,D,Centre Central Defender,22,21,1
+66635_1,66635,777,21,D,Centre Central Defender,17,27,1
+66657_1,66657,777,11,M,Left/Centre/Right Winger,14,22,1
+66657_2,66657,777,34,M,Left/Centre/Right Winger,14,22,2
+66659_1,66659,777,29,D,Central Defender,15,28,1
+66692_1,66692,777,38,D,Left Full Back,16,22,1
+66728_1,66728,777,38,G,Goalkeeper,40,21,1
+67178_1,67178,777,11,D,Defender,24,23,1
+67191_1,67191,777,12,D,Central Defender,6,27,1
+67407_1,67407,777,1,F,Right Winger,20,23,1
+67510_1,67510,777,15,D,Centre Central Defender,4,24,1
+67776_1,67776,777,1,D,Central Defender,12,24,1
+67784_1,67784,777,29,F,Forward,9,23,1
+67849_1,67849,777,11,M,Central Midfielder,14,23,1
+67910_1,67910,777,12,G,Goalkeeper,31,23,1
+67928_1,67928,777,131,D,Left Full Back,29,24,1
+68150_1,68150,777,11,M,Attacking Midfielder,10,21,1
+68219_1,68219,777,15,F,Centre Striker,25,,1
+68582_1,68582,777,10,D,Right Full Back,12,22,1
+68583_1,68583,777,4,F,Left Winger,11,21,1
+68593_1,68593,777,43,M,Left/Centre/Right Central Midfielder,28,22,1
+68676_1,68676,777,9,F,Attacking Midfielder,29,21,1
+68827_1,68827,777,4,D,Right Full Back,27,22,1
+68987_1,68987,777,4,F,Left/Right Winger,49,21,1
+69070_1,69070,777,21,D,Left/Centre/Right Central Defender,3,23,1
+69176_1,69176,777,12,F,Forward,16,23,1
+69274_1,69274,777,21,M,Attacking Midfielder,7,22,1
+69397_1,69397,777,2,G,Goalkeeper,64,20,1
+69595_1,69595,777,6,M,Central Midfielder,20,21,1
+69766_1,69766,777,38,M,Centre Attacking Midfielder,27,,1
+69914_1,69914,777,1,D,Left Full Back,33,23,1
+70228_1,70228,777,10,F,Right Winger,49,20,1
+70249_1,70249,777,15,D,Right Full Back,37,22,1
+71432_1,71432,777,11,D,Left Full Back,21,24,1
+71623_1,71623,777,23,M,Centre Defensive Midfielder,8,25,1
+71744_1,71744,777,12,G,Goalkeeper,1,27,1
+71923_1,71923,777,21,G,Goalkeeper,1,29,1
+72239_1,72239,777,131,M,Centre Defensive Midfielder,27,25,1
+72265_1,72265,777,2,F,Striker,29,24,1
+72265_2,72265,777,6,F,Striker,29,24,2
+72371_1,72371,777,4,F,Centre Striker,20,23,1
+74585_1,74585,777,7,D,Right Full Back,2,24,1
+74761_1,74761,777,23,M,Centre Defensive Midfielder,39,27,1
+74960_1,74960,777,43,M,Centre Defensive Midfielder,8,21,1
+74964_1,74964,777,43,F,Left/Right Winger,17,21,1
+74965_1,74965,777,127,D,Left Full Back,3,23,1
+74976_1,74976,777,127,M,Central Midfielder,8,21,1
+75382_1,75382,777,10,M,Left/Centre/Right Attacking Midfielder,7,22,1
+75543_1,75543,777,9,D,Left Full Back,3,26,1
+75582_1,75582,777,21,D,Central Defender,37,24,1
+75692_1,75692,777,29,G,Goalkeeper,22,22,1
+75709_1,75709,777,131,G,Goalkeeper,1,23,1
+75735_1,75735,777,43,F,Centre Attacking Midfielder,19,27,1
+75883_1,75883,777,43,F,Left Winger,31,26,1
+75989_1,75989,777,4,G,Goalkeeper,12,23,1
+76090_1,76090,777,131,D,Centre Central Defender,25,25,1
+76104_1,76104,777,6,D,Centre Central Defender,5,25,1
+76204_1,76204,777,11,M,Centre Central Midfielder,27,26,1
+76216_1,76216,777,11,F,Left/Centre/Right Striker,7,26,1
+76310_1,76310,777,38,M,Central Midfielder,5,,1
+76353_1,76353,777,6,D,Right Full Back,2,29,1
+76426_1,76426,777,15,D,Left Full Back,25,22,1
+76614_1,76614,777,21,F,Forward,11,20,1
+81542_1,81542,777,10,F,Centre Striker,22,23,1
+92635_1,92635,777,38,D,Centre Central Defender,24,26,1
+98300_1,98300,777,15,F,Forward,21,21,1
+99281_1,99281,777,11,D,Right Full Back,82,20,1
+99282_1,99282,777,4,M,Centre Defensive Midfielder,45,21,1
+107812_1,107812,777,29,D,Right Full Back,41,21,1
+107846_1,107846,777,2,M,Midfielder,26,21,1
+108096_1,108096,777,2,M,Centre Defensive Midfielder,24,24,1
+108319_1,108319,777,38,F,Centre Striker,9,,1
+108612_1,108612,777,130,M,Central Midfielder,16,,1
+108628_1,108628,777,25,D,Central Defender,21,,1
+108816_1,108816,777,15,M,Centre Central Midfielder,6,27,1
+108877_1,108877,777,38,D,Central Defender,37,26,1
+108922_1,108922,777,23,D,Left Full Back,3,20,1
+108928_1,108928,777,2,G,Goalkeeper,60,20,1
+108936_1,108936,777,12,M,Centre Central Midfielder,37,20,1
+108947_1,108947,777,38,D,Left/Right Wing Back,21,22,1
+109117_1,109117,777,6,M,Right Winger,10,22,1
+109707_1,109707,777,4,G,Goalkeeper,50,19,1
+109713_1,109713,777,25,M,Midfielder,26,19,1
+110117_1,110117,777,25,M,Midfielder,44,,1
+110203_1,110203,777,38,D,Centre Central Defender,12,,1
+110430_1,110430,777,29,D,Central Defender,14,,1
+110549_1,110549,777,6,D,Centre Central Defender,34,22,1
+110958_1,110958,777,29,G,Goalkeeper,31,22,1
+111022_1,111022,777,11,D,Defender,3,20,1
+111988_1,111988,777,38,D,Right Full Back,38,23,1
+112203_1,112203,777,4,M,Centre Defensive Midfielder,25,23,1
+112449_1,112449,777,6,M,Centre Defensive Midfielder,42,21,1
+112473_1,112473,777,10,M,Central Midfielder,70,20,1
+112589_1,112589,777,7,D,Centre Central Defender,15,24,1
+112739_1,112739,777,131,M,Centre Defensive Midfielder,13,20,1
+112917_1,112917,777,7,M,Midfielder,20,19,1
+112948_1,112948,777,11,M,Left/Centre Central Midfielder,33,20,1
+114564_1,114564,777,1,M,Midfielder,59,18,1
+114566_1,114566,777,1,M,Attacking Midfielder,11,,1
+114590_1,114590,777,23,F,Centre Striker,18,22,1
+115105_1,115105,777,29,F,Left Winger,10,22,1
+115114_1,115114,777,38,D,Centre Central Defender,15,24,1
+115151_1,115151,777,4,M,Centre Central Midfielder,14,21,1
+115166_1,115166,777,130,D,Left Full Back,2,23,1
+115172_1,115172,777,15,M,Centre Central Midfielder,16,27,1
+115255_1,115255,777,9,M,Centre Defensive Midfielder,44,25,1
+115256_1,115256,777,23,F,Second Striker,27,23,1
+115336_1,115336,777,130,M,Attacking Midfielder,17,20,1
+115371_1,115371,777,38,F,Striker,14,24,1
+116496_1,116496,777,10,G,Goalkeeper,25,,1
+116665_1,116665,777,10,D,Left Full Back,6,21,1
+116888_1,116888,777,9,M,Centre Defensive Midfielder,18,26,1
+117286_1,117286,777,34,G,Goalkeeper,23,34,1
+117318_1,117318,777,21,M,Centre Central Midfielder,15,22,1
+117497_1,117497,777,23,F,Centre Striker,9,29,1
+117552_1,117552,777,21,G,Goalkeeper,46,20,1
+117564_1,117564,777,12,D,Centre Central Defender,33,20,1
+117579_1,117579,777,25,D,Left Full Back,30,19,1
+117584_1,117584,777,10,D,Right Central Defender,92,19,1
+117596_1,117596,777,21,M,Central Midfielder,14,19,1
+117644_1,117644,777,131,D,Full Back,51,19,1
+117647_1,117647,777,23,M,Midfielder,67,19,1
+117732_1,117732,777,131,F,Forward,18,28,1
+117754_1,117754,777,15,D,Centre Central Defender,44,19,1
+117758_1,117758,777,131,F,Forward,22,,1
+117763_1,117763,777,34,F,Striker,9,24,1
+117800_1,117800,777,127,D,Central Defender,35,21,1
+118031_1,118031,777,12,M,Centre Defensive Midfielder,25,24,1
+118077_1,118077,777,1,D,Central Defender,5,23,1
+118080_1,118080,777,127,F,Forward,21,25,1
+118083_1,118083,777,25,G,Goalkeeper,1,25,1
+118442_1,118442,777,4,F,Left Winger,19,19,1
+118442_2,118442,777,7,F,Left Winger,19,20,2
+118579_1,118579,777,21,F,Left Winger,28,20,1
+118591_1,118591,777,12,D,Centre Central Defender,15,19,1
+118633_1,118633,777,29,F,Left/Right Winger,7,20,1
+119036_1,119036,777,1,G,Goalkeeper,35,19,1
+119041_1,119041,777,4,D,Left Full Back,21,19,1
+119059_1,119059,777,43,M,Winger,34,,1
+119072_1,119072,777,25,M,Centre Central Midfielder,18,21,1
+119288_1,119288,777,10,F,Forward,64,18,1
+119290_1,119290,777,10,M,Defensive Midfielder,94,19,1
+119292_1,119292,777,10,F,Forward,24,19,1
+119381_1,119381,777,127,D,Right Full Back,20,20,1
+119476_1,119476,777,1,D,Central Defender,3,21,1
+119531_1,119531,777,25,G,Goalkeeper,22,19,1
+119614_1,119614,777,29,M,Centre Central Midfielder,11,18,1
+120049_1,120049,777,131,F,Winger,58,18,1
+121610_1,121610,777,34,F,Left/Right Winger,22,22,1
+121972_1,121972,777,127,F,Left/Right Winger,11,19,1
+122005_1,122005,777,25,M,Centre Defensive Midfielder,27,21,1
+122056_1,122056,777,43,G,Goalkeeper,13,21,1
+122126_1,122126,777,29,D,Right Full Back,32,23,1
+122149_1,122149,777,25,F,Striker,7,,1
+122289_1,122289,777,9,M,Centre Attacking Midfielder,42,17,1
+122944_1,122944,777,131,M,Midfielder,49,,1
+122945_1,122945,777,4,F,Striker,62,18,1
+123566_1,123566,777,15,G,Goalkeeper,67,19,1
+123998_1,123998,777,21,G,Goalkeeper,31,23,1
+124052_1,124052,777,130,F,Striker,9,24,1
+124181_1,124181,777,2,M,Midfielder,18,,1
+124319_1,124319,777,21,D,Centre Central Defender,76,19,1
+124329_1,124329,777,7,M,Centre Central Midfielder,92,19,1
+124383_1,124383,777,29,M,Midfielder,53,18,1
+124396_1,124396,777,131,M,Centre Central Midfielder,17,21,1
+124462_1,124462,777,23,D,Defender,12,24,1
+124531_1,124531,777,43,D,Centre Central Defender,5,23,1
+124907_1,124907,777,2,M,Midfielder,53,18,1
+124944_1,124944,777,29,M,Central Midfielder,27,20,1
+125041_1,125041,777,9,M,Centre Defensive Midfielder,47,18,1
+125042_1,125042,777,23,G,Goalkeeper,58,18,1
+125075_1,125075,777,4,D,Right Full Back,34,19,1
+125829_1,125829,777,10,D,Right Full Back,2,22,1
+126108_1,126108,777,38,M,Centre Central Midfielder,27,27,1
+126110_1,126110,777,29,M,Defensive Midfielder,19,21,1
+126123_1,126123,777,11,M,Midfielder,,26,1
+126317_1,126317,777,29,F,Left Winger,24,,1
+126426_1,126426,777,9,M,Midfielder,22,26,1
+126789_1,126789,777,7,F,Centre Striker,14,27,1
+126824_1,126824,777,21,D,Right Full Back,13,22,1
+126920_1,126920,777,29,F,Centre Striker,12,20,1
+126943_1,126943,777,11,F,Right Winger,26,21,1
+127393_1,127393,777,43,D,Left Full Back,3,23,1
+127537_1,127537,777,11,M,Central Midfielder,59,19,1
+127594_1,127594,777,130,M,Left/Right Winger,7,23,1
+127659_1,127659,777,23,D,Left Full Back,3,21,1
+127668_1,127668,777,15,F,Striker,20,25,1
+127725_1,127725,777,1,M,Attacking Midfielder,39,19,1
+127826_1,127826,777,6,M,Midfielder,59,19,1
+127828_1,127828,777,6,D,Right Full Back,38,19,1
+127846_1,127846,777,21,M,Midfielder,52,19,1
+127852_1,127852,777,11,M,Midfielder,29,,1
+127864_1,127864,777,10,D,Defender,57,18,1
+128364_1,128364,777,34,D,Central Defender,35,18,1
+128366_1,128366,777,12,M,Centre/Right Attacking Midfielder,38,18,1
+128372_1,128372,777,15,F,Forward,77,17,1
+128411_1,128411,777,7,M,Centre Central Midfielder,34,23,1
+128449_1,128449,777,43,F,Centre Striker,7,25,1
+128456_1,128456,777,43,D,Centre Central Defender,18,26,1
+128643_1,128643,777,43,D,Right Full Back,17,,1
+128863_1,128863,777,29,M,Midfielder,46,22,1
+128891_1,128891,777,130,M,Centre Attacking Midfielder,18,21,1
+128966_1,128966,777,11,D,Centre Central Defender,90,18,1
+128969_1,128969,777,11,F,Forward,92,17,1
+128976_1,128976,777,34,M,Centre Central Midfielder,24,18,1
+128977_1,128977,777,9,M,Midfielder,51,18,1
+129443_1,129443,777,130,F,Centre Striker,47,19,1
+129740_1,129740,777,38,F,Right Winger,74,19,1
+129833_1,129833,777,12,F,Centre Striker,32,17,1
+129835_1,129835,777,127,F,Forward,50,20,1
+129952_1,129952,777,131,M,Midfielder,53,17,1
+130068_1,130068,777,29,F,Centre Striker,9,19,1
+130068_2,130068,777,4,F,Centre Striker,9,19,2
+130150_1,130150,777,12,F,Right Winger,70,17,1
+130151_1,130151,777,12,F,Right Winger,61,18,1
+130234_1,130234,777,23,F,Centre Striker,62,18,1
+130665_1,130665,777,10,M,Midfielder,42,18,1
+130672_1,130672,777,38,D,Defender,59,18,1
+131312_1,131312,777,25,D,Defender,63,18,1
+132285_1,132285,777,127,D,Centre Central Defender,18,24,1
+132956_1,132956,777,4,D,Centre Central Defender,23,20,1
+133025_1,133025,777,15,F,Right Winger,26,,1
+133097_1,133097,777,130,M,Winger,45,19,1
+133114_1,133114,777,12,D,Left Full Back,26,18,1
+133123_1,133123,777,127,M,Midfielder,16,,1
+133124_1,133124,777,127,F,Forward,50,19,1
+133164_1,133164,777,23,G,Goalkeeper,59,18,1
+133169_1,133169,777,2,D,Right Full Back,16,22,1
+133245_1,133245,777,4,M,Centre Defensive Midfielder,8,21,1
+133297_1,133297,777,6,M,Midfielder,14,,1
+133430_1,133430,777,4,M,Centre Attacking Midfielder,40,20,1
+133430_2,133430,777,9,M,Centre Attacking Midfielder,40,21,2
+133460_1,133460,777,130,D,Right Full Back,33,21,1
+133603_1,133603,777,21,M,Central Midfielder,15,19,1
+133612_1,133612,777,7,M,Central Midfielder,24,22,1
+133650_1,133650,777,12,M,Centre Central Midfielder,39,18,1
+133679_1,133679,777,38,M,Centre Central Midfielder,8,24,1
+133890_1,133890,777,130,F,Left/Right Winger,19,23,1
+134176_1,134176,777,131,M,Centre/Right Attacking Midfielder,8,,1
+134234_1,134234,777,127,F,Left/Centre/Right Striker,37,19,1
+134286_1,134286,777,7,M,Midfielder,5,18,1
+134333_1,134333,777,131,M,Midfielder,26,21,1
+134403_1,134403,777,127,G,Goalkeeper,1,25,1
+134463_1,134463,777,130,M,Midfielder,51,21,1
+134782_1,134782,777,4,M,Midfielder,56,17,1
+134791_1,134791,777,21,M,Left/Centre/Right Attacking Midfielder,68,16,1
+134792_1,134792,777,4,M,Midfielder,81,16,1
+134796_1,134796,777,10,F,Left Winger,73,16,1
+134819_1,134819,777,6,D,Central Defender,60,18,1
+134829_1,134829,777,29,F,Forward,29,21,1
+135304_1,135304,777,127,M,Midfielder,27,20,1
+135830_1,135830,777,4,F,Forward,55,18,1
+135941_1,135941,777,21,F,Forward,79,18,1
+136175_1,136175,777,131,F,Left/Centre/Right Winger,11,21,1
+136505_1,136505,777,25,M,Central Midfielder,18,,1
+136815_1,136815,777,38,D,Left Full Back,6,23,1
+137371_1,137371,777,11,D,Central Defender,45,21,1
+137462_1,137462,777,43,D,Left Full Back,23,24,1
+137832_1,137832,777,127,F,Striker,,,1
+138104_1,138104,777,29,M,Midfielder,28,25,1
+138137_1,138137,777,15,F,Centre Striker,29,23,1
+138185_1,138185,777,25,F,Forward,66,18,1
+138518_1,138518,777,25,D,Defender,,24,1
+138981_1,138981,777,6,M,Left Winger,55,21,1
+139644_1,139644,777,38,F,Forward,30,20,1
+139648_1,139648,777,15,D,Left/Centre Central Defender,5,23,1
+139657_1,139657,777,127,G,Goalkeeper,29,23,1
+139930_1,139930,777,131,F,Forward,,,1
+140024_1,140024,777,7,D,Left Full Back,39,19,1
+140223_1,140223,777,25,M,Midfielder,55,20,1
+140368_1,140368,777,43,D,Defender,43,19,1
+140381_1,140381,777,12,M,Centre Central Midfielder,77,17,1
+140459_1,140459,777,25,F,Forward,53,19,1
+140546_1,140546,777,127,D,Centre Central Defender,44,18,1
+141181_1,141181,777,1,M,Attacking Midfielder,56,15,1
+141639_1,141639,777,15,G,Goalkeeper,13,29,1
+142629_1,142629,777,43,F,Forward,45,17,1
+143214_1,143214,777,38,M,Centre Defensive Midfielder,7,24,1
+143218_1,143218,777,38,M,Attacking Midfielder,10,,1
+143240_1,143240,777,131,M,Central Midfielder,25,22,1
+143264_1,143264,777,131,G,Goalkeeper,62,18,1
+143561_1,143561,777,2,G,Goalkeeper,95,16,1
+143654_1,143654,777,25,D,Central Defender,58,17,1
+143734_1,143734,777,11,F,Left/Right Winger,97,17,1
+143922_1,143922,777,7,F,Centre Striker,11,22,1
+144213_1,144213,777,2,M,Midfielder,83,17,1
+144788_1,144788,777,130,G,Goalkeeper,12,23,1
+144894_1,144894,777,34,F,Forward,9,18,1
+145043_1,145043,777,131,F,Striker,19,18,1
+145134_1,145134,777,43,M,Midfielder,54,18,1
+145347_1,145347,777,25,D,Defender,12,20,1
+145412_1,145412,777,1,F,Striker,71,17,1
+145413_1,145413,777,1,M,Midfielder,72,17,1
+145417_1,145417,777,29,M,Midfielder,52,18,1
+145492_1,145492,777,38,F,Centre Striker,36,18,1
+145550_1,145550,777,6,F,Forward,73,17,1
+145902_1,145902,777,1,F,Forward,81,16,1
+145986_1,145986,777,21,F,Winger,54,17,1
+145989_1,145989,777,4,F,Forward,76,16,1
+146050_1,146050,777,21,D,Centre Central Defender,67,17,1
+146354_1,146354,777,25,F,Right Winger,31,,1
+146391_1,146391,777,6,M,Midfielder,12,22,1
+146567_1,146567,777,12,D,Left Full Back,13,20,1
+147032_1,147032,777,38,D,Right Full Back,46,19,1
+147312_1,147312,777,6,D,Centre Central Defender,23,19,1
+147692_1,147692,777,7,F,Forward,58,17,1
+147695_1,147695,777,9,D,Left Full Back,65,17,1
+147723_1,147723,777,38,G,Goalkeeper,70,17,1
+147792_1,147792,777,130,G,Goalkeeper,41,19,1
+147908_1,147908,777,1,D,Central Defender,89,15,1
+148616_1,148616,777,29,M,Midfielder,30,19,1
+148984_1,148984,777,38,M,Midfielder,60,19,1
+149016_1,149016,777,10,D,Central Defender,15,18,1
+150267_1,150267,777,4,M,Centre Defensive Midfielder,75,16,1
+151538_1,151538,777,6,F,Forward,86,16,1
+155030_1,155030,777,4,M,Left/Centre/Right Attacking Midfielder,72,16,1
+256083_1,256083,777,127,M,Midfielder,51,17,1
+283102_1,283102,777,21,M,Midfielder,89,17,1
+301543_1,301543,777,10,F,Forward,79,17,1
+302305_1,302305,777,127,D,Left Full Back,6,20,1
+302807_1,302807,777,38,M,Midfielder,50,16,1
+303391_1,303391,777,130,M,Midfielder,48,17,1
+303753_1,303753,777,10,G,Goalkeeper,41,20,1
+303860_1,303860,777,131,D,Centre Central Defender,42,,1
+303861_1,303861,777,38,M,Attacking Midfielder,,,1
+304123_1,304123,777,15,F,Striker,19,24,1
+304191_1,304191,777,12,D,Left Full Back,35,18,1
+304238_1,304238,777,15,D,Central Defender,23,20,1
+304474_1,304474,777,4,F,Right Winger,41,18,1
+304548_1,304548,777,25,D,Defender,,,1
+304595_1,304595,777,25,F,Centre Striker,19,22,1
+304679_1,304679,777,23,F,Left Winger,64,18,1
+304995_1,304995,777,43,M,Midfielder,41,17,1
+305212_1,305212,777,43,M,Midfielder,47,18,1
+310972_1,310972,777,43,M,Midfielder,47,18,1
+326089_1,326089,777,2,F,Right Winger,47,19,1
+326851_1,326851,777,2,F,Centre Striker,30,16,1
+327129_1,327129,777,29,F,Right Winger,37,21,1
+327693_1,327693,777,25,M,Winger,21,21,1
+327705_1,327705,777,21,D,Left Full Back,38,19,1
+331630_1,331630,777,10,D,Defender,75,17,1
