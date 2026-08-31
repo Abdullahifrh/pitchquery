@@ -260,10 +260,12 @@ COMMENT ON COLUMN warehouse.fact_match_events.season_id IS
 'Foreign key to dim_seasons.season_id — denormalized from dim_fixtures for convenient season-scoped filtering without a join.';
 
 COMMENT ON COLUMN warehouse.fact_match_events.team_id IS
-'Foreign key to dim_teams.team_id. For event_type IN (''goal'',''penalty goal'',''own goal''): the team CREDITED with the goal on the scoreboard (for an own goal, this is the beneficiary team, NOT the team of the player who put it in their own net — see own_goal_player_id). For event_type IN (''yellow'',''red''): the carded player''s own team. For event_type = ''substitution'': the team making the substitution.';
+'Foreign key to dim_teams.team_id. For event_type IN (''goal'',''penalty goal'',''own goal''): the team CREDITED with the goal on the scoreboard (for an own goal, this is the beneficiary team, NOT the team of the player who put it in their own net — see own_goal_player_id). For event_type IN (''yellow'',''red''): the carded player''s own team. For event_type = ''substitution'': the team making the substitution.
+To find the team that actually CONCEDED an own goal (the opposite of this column''s beneficiary team for that row), join to dim_fixtures on fixture_id and take whichever of home_team_id/away_team_id is NOT this row''s team_id.';
 
 COMMENT ON COLUMN warehouse.fact_match_events.event_type IS
-'One of: ''goal'', ''penalty goal'', ''own goal'', ''yellow'', ''red'', ''substitution''. Determines which single role column below is populated (see each role column''s comment for the exact mapping).';
+'One of: ''goal'', ''penalty goal'', ''own goal'', ''yellow'', ''red'', ''substitution''. Determines which single role column below is populated (see each role column''s comment for the exact mapping).
+Counting a player''s goals at the event level: ''goal'' and ''penalty goal'' are both genuine goals scored by that player — "how many goals did X score" must include both. The simplest correct filter is WHERE scorer_player_id = <id> with NO event_type filter at all, since scorer_player_id is only ever populated for these two types (see that column''s comment). Adding event_type = ''goal'' on top silently drops penalties and undercounts — do not do this.';
 
 COMMENT ON COLUMN warehouse.fact_match_events.scorer_player_id IS
 'Foreign key to dim_players.player_id. Populated ONLY when event_type IN (''goal'', ''penalty goal'') — the player who scored. NULL for every other event_type, including ''own goal'' (an own goal is not a genuine scoring credit — see own_goal_player_id instead).';
@@ -335,16 +337,16 @@ COMMENT ON COLUMN warehouse.fact_shot_events.is_stoppage_time IS
 'Flag for stoppage time. Stored as "t" (True) if event occurred during first-half or second-half stoppage/injury time (i.e. minute_display contains a "+"), or "f" (False) otherwise.';
 
 COMMENT ON COLUMN warehouse.fact_shot_events.shot_type IS
-'Qualitative shot category, e.g. "Open Play", "Penalty", "Own Goal", "Direct Free Kick".';
+'Shot origin category. Exact closed set of values, no others occur: ''Own Goal'', ''Penalty'', ''Set Piece'', ''Open Play''. ''Set Piece'' covers both corners and free kicks combined - this warehouse does not distinguish which of the two for a given shot, so a question asking specifically about corners alone or free kicks alone cannot be answered from this column, only "set piece" as a whole. To compare a team''s goals conceded by set piece vs open play: filter fact_shot_events to that team''s fixtures, outcome = ''Goal'' AND team_id = the OPPONENT (a normal goal against them), UNION with outcome = ''Own Goal'' AND team_id = the team itself (see this table''s team_id comment for why the own-goal convention differs from fact_match_events), then GROUP BY shot_type.';
 
 COMMENT ON COLUMN warehouse.fact_shot_events.body_part IS
-'Body part used to take the shot: "Right Foot", "Left Foot", or "Head" (occasionally other values for rare cases, e.g. "Other"). NULL for some own-goal/rebound edge cases where Pulse does not report it.';
+'Body part used to take the shot. Exact closed set of values, no others occur: ''Right Foot'', ''Left Foot'', ''Header'', ''Volley''. NULL when Pulse''s shot commentary text does not clearly indicate one of these (a real, fairly common case - do not assume NULL means an error).';
 
 COMMENT ON COLUMN warehouse.fact_shot_events.distance IS
-'Qualitative shot distance indicator — "Inside Box" or "Outside Box" — NOT a numeric distance measurement. There is no exact-yardage distance column in this warehouse.';
+'Qualitative shot distance indicator. Exact closed set of values, no others occur: ''Inside Box'', ''Outside Box''. NOT a numeric distance measurement - there is no exact-yardage distance column in this warehouse. NULL when Pulse''s shot commentary text does not clearly indicate one of these.';
 
 COMMENT ON COLUMN warehouse.fact_shot_events.outcome IS
-'Result of the shot attempt: "Goal", "Saved", "Missed", "Blocked", "Own Goal", or similar. A shot attempts stat query (e.g. "how many shots did Team X have") should count ALL rows regardless of outcome, matching the standard football-analytics meaning of "shot attempts" / "total_scoring_att" (see fact_team_match_stats.total_scoring_att) — not just outcome = ''Goal''.';
+'Result of the shot attempt. Exact closed set of values, no others occur: ''Goal'', ''Saved'', ''Missed'', ''Blocked'', ''Own Goal'', ''Hit the Woodwork''. A shot attempts stat query (e.g. "how many shots did Team X have") should count ALL rows regardless of outcome, matching the standard football-analytics meaning of "shot attempts" / "total_scoring_att" (see fact_team_match_stats.total_scoring_att) - not just outcome = ''Goal''.';
 
 COMMENT ON COLUMN warehouse.fact_shot_events.ingested_at IS
 'Audit timestamp: when this row was first written to the warehouse. Never updated after initial insert.';
