@@ -1,0 +1,91 @@
+name: Live Ingestion Pipeline
+
+# Scheduled runs are intentionally not enabled yet - only workflow_dispatch
+# (manual trigger) is active below. Once you've triggered this manually at
+# least once and confirmed it updates the real database correctly, enable
+# the schedule by replacing the "on:" block below with:
+#
+# on:
+#   schedule:
+#     - cron: "0 12,14,17,20,23 * * *"
+#   workflow_dispatch: {}
+
+on:
+  workflow_dispatch: {} # manual trigger for backfills / debugging / initial validation
+
+concurrency:
+  group: live-ingestion
+  cancel-in-progress: false # queue a new run rather than cancelling one mid-write
+
+jobs:
+  live-ingestion:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_PORT: ${{ secrets.DB_PORT }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # --- Guard clause: skip everything if nothing is happening today ---
+      - name: Check whether today has any Premier League fixtures
+        id: fixture_check
+        run: |
+          python -c "
+          import sys
+          from datetime import datetime, timezone
+          from pipelines.extract.fpl import fetch_fpl_fixtures
+
+          today = datetime.now(timezone.utc).date()
+          fixtures = fetch_fpl_fixtures()
+          fixtures = fixtures if isinstance(fixtures, list) else fixtures.get('content', [])
+
+          def kickoff_date(fx):
+              ko = fx.get('kickoff_time')
+              return datetime.fromisoformat(ko.replace('Z', '+00:00')).date() if ko else None
+
+          has_fixture_today = any(kickoff_date(fx) == today for fx in fixtures)
+          print(f'has_fixtures_today={str(has_fixture_today).lower()}')
+          " | tee -a "$GITHUB_OUTPUT"
+
+      # --- Tests gate ingestion: if this fails, nothing below it runs ---
+      - name: Run test suite
+        if: steps.fixture_check.outputs.has_fixtures_today == 'true'
+        run: python -m pytest -v
+
+      # --- Live season ingestion (writes to the warehouse) ---
+      # --no-export-snapshots: the CSV snapshot this would otherwise write
+      # lands on the ephemeral runner's disk and is discarded when the job
+      # ends - nothing reads it from here, so skip the write entirely.
+      - name: Run live ingestion for the active season
+        if: steps.fixture_check.outputs.has_fixtures_today == 'true'
+        run: python -m pipelines.run_live --season-id 841 --no-export-snapshots
+
+      # --- Smoke test: confirm the API can actually see the fresh data ---
+      - name: Verify API boots and serves /health
+        if: steps.fixture_check.outputs.has_fixtures_today == 'true'
+        run: |
+          python -m uvicorn api.main:app --host 0.0.0.0 --port 8000 &
+          SERVER_PID=$!
+          for i in $(seq 1 10); do
+            if curl -sf http://localhost:8000/health; then break; fi
+            sleep 2
+          done
+          curl -sf http://localhost:8000/health
+          kill $SERVER_PID
+
+      - name: Skip reason (no fixtures today)
+        if: steps.fixture_check.outputs.has_fixtures_today != 'true'
+        run: echo "No Premier League fixtures scheduled today - skipping test/ingestion/API steps for this run."
