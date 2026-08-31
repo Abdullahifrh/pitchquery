@@ -1,4 +1,4 @@
-# PL Data Engine
+# PitchQuery
 
 A Premier League data engine built around a season-based ETL pipeline, a PostgreSQL data warehouse with real foreign-key relationships, and a FastAPI service for querying teams, players, fixtures and season statistics.
 
@@ -201,6 +201,28 @@ python -m pytest -v
 ```
 
 No flags, no live network calls, and no real Postgres required — every fixture is either pure Python/pandas or backed by an in-memory SQLite engine.
+
+## Continuous Integration
+
+Every push and pull request against `main` runs the full test suite via GitHub Actions (`.github/workflows/ci.yml`) — no database service needed, for the same reason `pytest` needs none locally. On a successful push to `main`, a second job builds the API image and publishes it to GitHub Container Registry, tagged both `latest` and with the commit SHA.
+
+## Docker
+
+The API is published as a standalone image — pull and run it without cloning the repo or installing Python:
+
+```bash
+docker pull ghcr.io/<owner>/<repo>:latest
+
+docker run -p 8000:8000 \
+  -e DB_USER=your_user_name \
+  -e DB_PASSWORD=your_password \
+  -e DB_HOST=your_host \
+  -e DB_PORT=5432 \
+  -e DB_NAME=premierleague \
+  ghcr.io/<owner>/<repo>:latest
+```
+
+The image contains the API only (`api/` plus its dependencies) — it does not run the pipeline, and expects the same five `DB_*` environment variables described above, pointed at a reachable Postgres instance. Once running, the API is available at `http://localhost:8000`, same as the local Uvicorn instructions above.
 
 ## Future work
 
