@@ -24,6 +24,21 @@
 -- Idempotent: every statement is a plain `COMMENT ON COLUMN`, which always
 -- overwrites any existing comment rather than erroring if one is already
 -- present — safe to re-run this whole file after any future column change.
+--
+-- Per-90 rate stats, GI/xGI: fact_player_season_stats.mins_played documents
+-- the full per-90 convention used throughout this dictionary (the formula,
+-- the qualifying-minutes threshold, and why that threshold is expressed as
+-- a fraction of the player's team's minutes played so far rather than a
+-- fixed number) — read that column's comment first if a per-90 question
+-- comes up. Per-90 formulas are attached to the ~20 columns most commonly
+-- expressed that way in football analysis (attacking output, progression,
+-- core defensive actions, goalkeeping) — deliberately not applied
+-- mechanically to every counting column in this table; see mins_played for
+-- the full reasoning. Team-level tables (fact_team_match_stats,
+-- fact_team_season_stats) do NOT get per-90 treatment: team stats are
+-- naturally per-match already (a team always plays a full match, barring
+-- abandonment), so "per 90" adds nothing there that per-match/per-season
+-- totals don't already give directly.
 -- =============================================================================
 
 
@@ -366,16 +381,30 @@ COMMENT ON COLUMN warehouse.fact_player_season_stats.total_sub_off IS
 'Number of times this player was substituted off this season.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.mins_played IS
-'Total minutes played across all appearances this season.';
+'Total minutes played across all appearances this season. This is the denominator for every "per 90" rate stat in this warehouse (see the columns below that reference it) — the general formula is:
+  metric_per_90 = metric * 90.0 / NULLIF(mins_played, 0)
+"Per 90" and "/90" are the same thing in natural-language questions (e.g. "xGI per 90" and "xGI/90" refer to the identical stat) — treat them as synonyms.
+
+Small-sample caveat, and the qualifying-minutes convention: a per-90 rate computed on very few minutes is unreliable (one goal in a 10-minute cameo produces an absurd per-90 rate) and should not be reported without a qualifying-minutes filter first. Rather than a fixed minutes cutoff (which would exclude every single player early in a season and need manual raising as the season progresses), the qualifying threshold in this warehouse is expressed as a percentage of the player''s team''s total possible minutes so far this season:
+  a player qualifies for per-90 comparisons if mins_played >= 0.30 * (team''s completed fixtures this season * 90)
+"Team''s completed fixtures this season" for a given player_id/season_id is computed via bridge_player_seasons (to resolve team_id) joined to dim_fixtures:
+  SELECT COUNT(*) FROM warehouse.dim_fixtures f
+  WHERE f.season_id = <season_id> AND f.fixture_status = ''C''
+    AND (f.home_team_id = <team_id> OR f.away_team_id = <team_id>)
+This single formula needs no special-casing for season status: early in a live season it naturally yields a small, proportionate qualifying threshold that grows automatically as more fixtures complete, and once every fixture in a season is complete (e.g. season_id 777) it automatically becomes a fixed, full-season qualifying threshold — the same rule, unchanged, applies to both a live and a completed season. 30% is a reasonable default to exclude fringe/cameo appearances while still including squad-rotation regulars; it is a documented convention in this warehouse, not a rigid industry rule — adjust it for a specific analysis if a stricter or looser cutoff is called for, but state the percentage used when doing so.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.goals IS
-'Total goals scored this season, all types combined (open play + penalties). Synonyms: "goals scored", "goal tally". For "goal involvements"/"G+A"/"G/A"/"goals and assists"/"GA", sum this column with goal_assist.';
+'Total goals scored this season, all types combined (open play + penalties). Synonyms: "goals scored", "goal tally".
+GI (Goal Involvements): GI = goals + goal_assist. Synonyms: "goal involvements", "G+A", "G/A", "goals and assists", "GA".
+Per 90: goals_per_90 = goals * 90.0 / NULLIF(mins_played, 0); GI_per_90 = (goals + goal_assist) * 90.0 / NULLIF(mins_played, 0). See mins_played for the qualifying-minutes convention before reporting either rate.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.goals_openplay IS
 'Goals scored from open play specifically (excludes penalties; own goals are never credited to a scorer, so also excluded by definition).';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.goal_assist IS
-'Total assists — passes that directly led to a goal. Synonyms: "assists". For "goal involvements"/"G+A"/"G/A"/"goals and assists"/"GA", sum this column with goals.';
+'Total assists — passes that directly led to a goal. Synonyms: "assists".
+GI (Goal Involvements): GI = goals + goal_assist. See the goals column for the full GI/per-90 formula and synonyms.
+Per 90: assists_per_90 = goal_assist * 90.0 / NULLIF(mins_played, 0). See mins_played for the qualifying-minutes convention before reporting this rate.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.goal_assist_deadball IS
 'Assists specifically from a dead-ball situation (e.g. a corner or free kick delivery), a subset already included in goal_assist.';
@@ -384,16 +413,19 @@ COMMENT ON COLUMN warehouse.fact_player_season_stats.total_att_assist IS
 'Total "attempted assists" — passes that led to a shot attempt, whether or not that shot resulted in a goal (a superset of goal_assist).';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.big_chance_created IS
-'Number of clear goalscoring opportunities this player created for a teammate (Opta-defined "big chance": a situation where the receiving player would reasonably be expected to score).';
+'Number of clear goalscoring opportunities this player created for a teammate (Opta-defined "big chance": a situation where the receiving player would reasonably be expected to score).
+Per 90: big_chances_created_per_90 = big_chance_created * 90.0 / NULLIF(mins_played, 0). See mins_played for the qualifying-minutes convention before reporting this rate.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.big_chance_missed IS
 'Number of clear goalscoring opportunities this player received but failed to score from.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.total_scoring_att IS
-'Total shot attempts (shots on target + shots off target + blocked shots). Synonyms: "shots", "shot attempts", "total shots", "shots taken". This is the correct column for "how many shots did X take" — NOT goals or ontarget_scoring_att.';
+'Total shot attempts (shots on target + shots off target + blocked shots). Synonyms: "shots", "shot attempts", "total shots", "shots taken". This is the correct column for "how many shots did X take" — NOT goals or ontarget_scoring_att.
+Per 90: shots_per_90 = total_scoring_att * 90.0 / NULLIF(mins_played, 0). See mins_played for the qualifying-minutes convention before reporting this rate.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.ontarget_scoring_att IS
-'Shot attempts that were on target (would have gone in without a save or blocking touch, including goals). Synonyms: "shots on target", "SoT".';
+'Shot attempts that were on target (would have gone in without a save or blocking touch, including goals). Synonyms: "shots on target", "SoT".
+Per 90: shots_on_target_per_90 = ontarget_scoring_att * 90.0 / NULLIF(mins_played, 0). See mins_played for the qualifying-minutes convention before reporting this rate.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.total_pass IS
 'Total passes attempted (completed + incomplete).';
@@ -426,16 +458,19 @@ COMMENT ON COLUMN warehouse.fact_player_season_stats.corner_taken IS
 'Number of corner kicks taken by this player.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.final_third_entries IS
-'Number of times this player carried or passed the ball into the attacking final third.';
+'Number of times this player carried or passed the ball into the attacking final third.
+Per 90: final_third_entries_per_90 = final_third_entries * 90.0 / NULLIF(mins_played, 0). See mins_played for the qualifying-minutes convention before reporting this rate.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.pen_area_entries IS
-'Number of times this player carried or passed the ball into the opposition penalty area.';
+'Number of times this player carried or passed the ball into the opposition penalty area.
+Per 90: pen_area_entries_per_90 = pen_area_entries * 90.0 / NULLIF(mins_played, 0). See mins_played for the qualifying-minutes convention before reporting this rate.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.carries IS
 'Total number of times this player carried (ran with) the ball.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.progressive_carries IS
-'Ball carries that moved the ball significantly closer to the opposition goal (Opta-defined progressive-distance threshold).';
+'Ball carries that moved the ball significantly closer to the opposition goal (Opta-defined progressive-distance threshold).
+Per 90: progressive_carries_per_90 = progressive_carries * 90.0 / NULLIF(mins_played, 0). See mins_played for the qualifying-minutes convention before reporting this rate.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.touches IS
 'Total number of times this player touched the ball.';
@@ -450,7 +485,8 @@ COMMENT ON COLUMN warehouse.fact_player_season_stats.total_through_ball IS
 'Through balls attempted (a pass played between/behind defenders into space for a teammate to run onto).';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.total_tackle IS
-'Total tackles attempted (successful + unsuccessful).';
+'Total tackles attempted (successful + unsuccessful).
+Per 90: tackles_per_90 = total_tackle * 90.0 / NULLIF(mins_played, 0). See mins_played for the qualifying-minutes convention before reporting this rate.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.won_tackle IS
 'Tackles that successfully won possession of the ball.';
@@ -459,19 +495,22 @@ COMMENT ON COLUMN warehouse.fact_player_season_stats.times_tackled IS
 'Number of times this player was tackled by an opponent (regardless of whether the opponent''s tackle won the ball).';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.duel_won IS
-'Total 1-on-1 duels (ground or aerial) won.';
+'Total 1-on-1 duels (ground or aerial) won.
+Per 90: duels_won_per_90 = duel_won * 90.0 / NULLIF(mins_played, 0). See mins_played for the qualifying-minutes convention before reporting this rate.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.duel_lost IS
 'Total 1-on-1 duels lost.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.interception_won IS
-'Number of successful interceptions (reading and cutting out an opponent''s pass).';
+'Number of successful interceptions (reading and cutting out an opponent''s pass).
+Per 90: interceptions_per_90 = interception_won * 90.0 / NULLIF(mins_played, 0). See mins_played for the qualifying-minutes convention before reporting this rate.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.challenge_lost IS
 'Number of unsuccessful defensive challenges (the opponent retained or won the ball).';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.ball_recovery IS
-'Number of loose-ball recoveries (regaining possession that was not clearly won via a tackle or interception).';
+'Number of loose-ball recoveries (regaining possession that was not clearly won via a tackle or interception).
+Per 90: ball_recoveries_per_90 = ball_recovery * 90.0 / NULLIF(mins_played, 0). See mins_played for the qualifying-minutes convention before reporting this rate.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.dispossessed IS
 'Number of times this player lost the ball to an opponent''s direct challenge while in possession.';
@@ -483,7 +522,8 @@ COMMENT ON COLUMN warehouse.fact_player_season_stats.total_clearance IS
 'Total defensive clearances (kicking/heading the ball away from danger).';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.aerial_won IS
-'Aerial (headed) duels won.';
+'Aerial (headed) duels won.
+Per 90: aerials_won_per_90 = aerial_won * 90.0 / NULLIF(mins_played, 0). See mins_played for the qualifying-minutes convention before reporting this rate.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.aerial_lost IS
 'Aerial (headed) duels lost.';
@@ -558,10 +598,13 @@ COMMENT ON COLUMN warehouse.fact_player_season_stats.good_high_claim IS
 'High claims made cleanly/successfully, a subset of total_high_claim.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.goals_conceded IS
-'Goals conceded while this player (a goalkeeper) was on the pitch.';
+'Goals conceded while this player (a goalkeeper) was on the pitch.
+Per 90: goals_conceded_per_90 = goals_conceded * 90.0 / NULLIF(mins_played, 0) — a standard goalkeeper rate stat. See mins_played for the qualifying-minutes convention before reporting this rate (for goalkeepers specifically, qualify against mins_played as goalkeeper minutes, not outfield minutes, since a keeper''s "team" in the qualifying formula is the same team_id either way).';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.non_penalty_goals IS
-'Goals scored excluding penalty conversions (equivalent to goals_openplay in practice for most players, kept as a separate Opta-native column).';
+'Goals scored excluding penalty conversions (equivalent to goals_openplay in practice for most players, kept as a separate Opta-native column).
+npGI (Non-Penalty Goal Involvements): npGI = non_penalty_goals + goal_assist. Synonyms: "npGI", "non-penalty goal involvements". The non-penalty counterpart to GI (see the goals column).
+Per 90: non_penalty_goals_per_90 = non_penalty_goals * 90.0 / NULLIF(mins_played, 0); npGI_per_90 = (non_penalty_goals + goal_assist) * 90.0 / NULLIF(mins_played, 0). See mins_played for the qualifying-minutes convention before reporting either rate.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.penalties_missed IS
 'Penalty kicks taken and missed (saved or off target) by this player.';
@@ -570,22 +613,30 @@ COMMENT ON COLUMN warehouse.fact_player_season_stats.penalties_scored IS
 'Penalty kicks successfully converted by this player.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.saves IS
-'Total saves made (goalkeepers).';
+'Total saves made (goalkeepers).
+Per 90: saves_per_90 = saves * 90.0 / NULLIF(mins_played, 0). See mins_played for the qualifying-minutes convention before reporting this rate.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.own_goals IS
 'Own goals scored by this player this season. Cross-reference: individual own-goal events (with fixture and minute) are in fact_match_events.own_goal_player_id, not here — this column is only a season total.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.defensive_contribution IS
-'Opta''s composite defensive-actions metric (combines tackles, interceptions, and other defensive actions into a single count) — introduced as an official defender/midfielder involvement stat.';
+'Opta''s composite defensive-actions metric (combines tackles, interceptions, and other defensive actions into a single count) — introduced as an official defender/midfielder involvement stat.
+Per 90: defensive_contribution_per_90 = defensive_contribution * 90.0 / NULLIF(mins_played, 0) — this is the exact form of "defensive contribution" used for the FPL defensive-contribution scoring threshold, so this rate is a particularly common one to be asked about. See mins_played for the qualifying-minutes convention before reporting it.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.xg IS
-'Expected Goals (xG) — the probability, summed across all this player''s shots this season, that each shot results in a goal, based on historical shot-quality factors (location, angle, body part, defensive pressure, assist type). Synonyms: "xG", "expected goals", "chance quality". Higher than actual goals scored implies under-performance/bad luck relative to shot quality; lower implies over-performance.';
+'Expected Goals (xG) — the probability, summed across all this player''s shots this season, that each shot results in a goal, based on historical shot-quality factors (location, angle, body part, defensive pressure, assist type). Synonyms: "xG", "expected goals", "chance quality". Higher than actual goals scored implies under-performance/bad luck relative to shot quality; lower implies over-performance.
+xGI (Expected Goal Involvements): xGI = xg + xa. Synonyms: "xGI", "expected goal involvements", "xG+xA". The expected-stats equivalent of GI (goals + goal_assist, documented on the goals column) — compares a player''s actual GI against xGI to gauge over/under-performance across both scoring and creating.
+Per 90: xg_per_90 = xg * 90.0 / NULLIF(mins_played, 0); xGI_per_90 = (xg + xa) * 90.0 / NULLIF(mins_played, 0). See mins_played for the qualifying-minutes convention before reporting either rate.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.npxg IS
-'Non-Penalty Expected Goals (npxG) — xg accumulated strictly from open-play and set-piece shots, excluding penalty kicks (penalties have a near-constant, very high conversion probability that would otherwise skew a player''s underlying shot-quality profile).';
+'Non-Penalty Expected Goals (npxG) — xg accumulated strictly from open-play and set-piece shots, excluding penalty kicks (penalties have a near-constant, very high conversion probability that would otherwise skew a player''s underlying shot-quality profile).
+npxGI (Non-Penalty Expected Goal Involvements): npxGI = npxg + xa. Synonyms: "npxGI", "non-penalty expected goal involvements". The non-penalty counterpart to xGI (see the xg column) — pairs with npGI = non_penalty_goals + goal_assist (see non_penalty_goals) the same way xGI pairs with GI.
+Per 90: npxg_per_90 = npxg * 90.0 / NULLIF(mins_played, 0); npxGI_per_90 = (npxg + xa) * 90.0 / NULLIF(mins_played, 0). See mins_played for the qualifying-minutes convention before reporting either rate.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.xa IS
-'Expected Assists (xA) — the probability, summed across all this player''s completed key passes this season, that each pass becomes a goal assist, based on the resulting shot''s quality. Synonyms: "xA", "expected assists".';
+'Expected Assists (xA) — the probability, summed across all this player''s completed key passes this season, that each pass becomes a goal assist, based on the resulting shot''s quality. Synonyms: "xA", "expected assists".
+Used in both xGI (xg + xa, see the xg column) and npxGI (npxg + xa, see the npxg column).
+Per 90: xa_per_90 = xa * 90.0 / NULLIF(mins_played, 0). See mins_played for the qualifying-minutes convention before reporting this rate.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.ingested_at IS
 'Audit timestamp: when this row was first written to the warehouse. Never updated after initial insert.';
