@@ -290,7 +290,7 @@ COMMENT ON COLUMN warehouse.fact_match_events.minute_display IS
 'Human-readable original minute text exactly as shown in match commentary (e.g. "23", "90+1''"). For display/citation purposes only — NOT numerically comparable (it is a text column that mixes plain minutes with "+" stoppage-time notation). Use the minute column for any numeric filtering.';
 
 COMMENT ON COLUMN warehouse.fact_match_events.is_stoppage_time IS
-'TRUE if this event occurred during first-half or second-half stoppage/injury time (i.e. minute_display contains a "+"), FALSE otherwise.';
+'Flag for stoppage time. Stored as "t" (True) if event occurred during first-half or second-half stoppage/injury time (i.e. minute_display contains a "+"), or "f" (False) otherwise.';
 
 COMMENT ON COLUMN warehouse.fact_match_events.ingested_at IS
 'Audit timestamp: when this row was first written to the warehouse. Never updated after initial insert.';
@@ -332,7 +332,7 @@ COMMENT ON COLUMN warehouse.fact_shot_events.minute_display IS
 'Human-readable original minute text exactly as shown in match commentary (e.g. "23", "90+1''"). Display/citation only — not numerically comparable.';
 
 COMMENT ON COLUMN warehouse.fact_shot_events.is_stoppage_time IS
-'TRUE if this shot occurred during first-half or second-half stoppage/injury time, FALSE otherwise.';
+'Flag for stoppage time. Stored as "t" (True) if event occurred during first-half or second-half stoppage/injury time (i.e. minute_display contains a "+"), or "f" (False) otherwise.';
 
 COMMENT ON COLUMN warehouse.fact_shot_events.shot_type IS
 'Qualitative shot category, e.g. "Open Play", "Penalty", "Own Goal", "Direct Free Kick".';
