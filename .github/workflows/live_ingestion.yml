@@ -1,16 +1,8 @@
 name: Live Ingestion Pipeline
 
-# Scheduled runs are intentionally not enabled yet - only workflow_dispatch
-# (manual trigger) is active below. Once you've triggered this manually at
-# least once and confirmed it updates the real database correctly, enable
-# the schedule by replacing the "on:" block below with:
-#
-# on:
-#   schedule:
-#     - cron: "0 12,14,17,20,23 * * *"
-#   workflow_dispatch: {}
-
 on:
+  schedule:
+    - cron: "0 12,14,17,20,23 * * *"
   workflow_dispatch: {} # manual trigger for backfills / debugging / initial validation
 
 concurrency:
