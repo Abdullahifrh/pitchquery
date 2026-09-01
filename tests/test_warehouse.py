@@ -1,27 +1,3 @@
-"""Database & warehouse integrity.
-
-Consolidates test_warehouse.py (DatatypeMismatch regression), the DB
-layers of test_audit_columns.py + test_audit_harmonization.py, and
-test_idempotency.py into one file, organized by the three layers real
-warehouse-pipeline DB testing actually covers:
-
-1. Connectivity & Health — the SQLite engine connects, and a session's
-   commit/rollback behaves correctly.
-2. Schema Integrity & DDL — `ensure_warehouse_table`'s branching logic
-   (the historical DatatypeMismatch regression), and that every table's
-   DDL includes `ingested_at`/`updated_at` with a `CURRENT_TIMESTAMP`
-   default.
-3. CRUD & Lineage Operations — `apply_audit_columns` injecting missing
-   audit columns into a raw seed DataFrame, and the full upsert
-   round-trip against real SQLite: row counts after insertion, ON
-   CONFLICT DO UPDATE behavior, and `ingested_at` staying fixed while
-   `updated_at` refreshes.
-
-Everything here either needs no I/O at all (pure pandas/mock-based) or
-runs against the function-scoped in-memory `sqlite_engine` fixture from
-conftest.py — no live Postgres required, so this file runs unattended.
-"""
-
 import time
 from unittest.mock import MagicMock, patch
 
@@ -29,7 +5,6 @@ import pandas as pd
 import pytest
 
 from pipelines.schema import AUDIT_COLUMNS, SchemaValidationError, apply_audit_columns
-
 
 # ---------------------------------------------------------------------
 # 1. Connectivity & Health
@@ -39,7 +14,6 @@ def test_engine_connects_and_executes(sqlite_engine):
     from sqlalchemy import text
     with sqlite_engine.connect() as conn:
         assert conn.execute(text("SELECT 1")).scalar() == 1
-
 
 def test_session_commit_persists_and_rollback_discards(sqlite_engine):
     from sqlalchemy import text
@@ -63,7 +37,6 @@ def test_session_commit_persists_and_rollback_discards(sqlite_engine):
     with sqlite_engine.connect() as conn:
         assert conn.execute(text("SELECT COUNT(*) FROM tx_probe WHERE id = 2")).scalar() == 0
 
-
 # ---------------------------------------------------------------------
 # 2. Schema Integrity & DDL
 # ---------------------------------------------------------------------
@@ -74,12 +47,10 @@ def _empty_lineup_frame() -> pd.DataFrame:
     exact shape that triggered the original DatatypeMismatch bug."""
     return pd.DataFrame(columns=["player_id", "fixture_id", "season_id", "team_id", "minutes_played", "starter_flag"])
 
-
 def _nonempty_lineup_frame() -> pd.DataFrame:
     return pd.DataFrame([
         {"player_id": 101, "fixture_id": 5, "season_id": 841, "team_id": 1, "minutes_played": 90, "starter_flag": True},
     ])
-
 
 class TestEnsureWarehouseTableDatatypeMismatchRegression:
     """Root cause: `ensure_warehouse_table` used to build its in-memory
@@ -159,7 +130,6 @@ class TestEnsureWarehouseTableDatatypeMismatchRegression:
         mock_ensure_warehouse_table.assert_called_once()
         engine.begin.assert_not_called()
 
-
 class TestAuditColumnDDL:
     """Every warehouse table's DDL must define ingested_at/updated_at
     with server_default=CURRENT_TIMESTAMP, regardless of whether the
@@ -194,7 +164,6 @@ class TestAuditColumnDDL:
         args, _ = mock_table.call_args
         column_names = {c.name for c in args[2:]}
         assert AUDIT_COLUMNS[0] in column_names and AUDIT_COLUMNS[1] in column_names
-
 
 class TestAuditColumnRetrofit:
     """A table created by an earlier version of this pipeline (before
@@ -269,7 +238,6 @@ class TestAuditColumnRetrofit:
         assert mock_table.call_count == 1  # reflected once, no re-reflect needed
         assert result is up_to_date_table
 
-
 # ---------------------------------------------------------------------
 # 3. CRUD & Lineage Operations
 # ---------------------------------------------------------------------
@@ -297,7 +265,6 @@ class TestApplyAuditColumns:
         out = apply_audit_columns(df, as_of=pd.Timestamp("2026-06-01T00:00:00Z"))
         assert out["ingested_at"].iloc[0] == original
         assert out["updated_at"].iloc[0] == original
-
 
 class TestUpsertBehaviorAgainstRealSQLite:
     """The literal scenario from the task, exercised against the real
@@ -404,7 +371,6 @@ class TestUpsertBehaviorAgainstRealSQLite:
         from pipelines.load.warehouse import ensure_schemas
         ensure_schemas(sqlite_engine)
         ensure_schemas(sqlite_engine)  # must not raise on a second call
-
 
 class TestCrossSeasonSyntheticIdCollisionRegression:
     """Regression test for a real production bug: `fact_match_events`,

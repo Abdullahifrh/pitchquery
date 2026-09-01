@@ -1,25 +1,3 @@
-"""Pipeline & ETL health.
-
-Consolidates what used to be spread across test_pipeline.py,
-test_data_quality.py, test_season_slug.py, test_seasons.py,
-test_fixture_mapping.py, test_archive.py, and test_seed.py into one
-file, organized by pipeline stage:
-
-1. Schema/contract shape + business-rule/data-quality assertions
-   against `sample_frames` (schema shape, PK uniqueness, referential
-   integrity, value bounds — merged into unified parametrized checks
-   rather than one test function per table/rule).
-2. Season label normalization (the `dim_seasons.season_name` /
-   snapshot-slug transformation logic).
-3. FPL<->Pulse fixture-mapping crosswalk (the highest-value subset of
-   the original 9-case regression suite — the specific "pulse_id is
-   broken" bug and its fallback, not every input-shape permutation).
-4. Historical seed loading (`pipelines.seed.load_historical_frames`).
-5. Archive orchestration (`pipelines.archive.archive_season`).
-6. End-to-end pipeline idempotency: upserting the same frames twice
-   into a real (SQLite) database yields identical row counts.
-"""
-
 import pandas as pd
 import pytest
 import re
@@ -69,11 +47,9 @@ REFERENTIAL_INTEGRITY_CHECKS = [
     ("bridge_player_seasons", "team_id", "dim_teams", "team_id"),
 ]
 
-
 def _expected_columns(table_name: str) -> tuple[str, ...]:
     contract = SCHEMA[table_name]
     return contract.columns if contract.columns is not None else CRITICAL_COLUMNS[table_name]
-
 
 @pytest.mark.parametrize("table_name", list(SCHEMA.keys()))
 def test_table_present_with_required_columns_and_unique_nonnull_pk(sample_frames, table_name):
@@ -91,14 +67,12 @@ def test_table_present_with_required_columns_and_unique_nonnull_pk(sample_frames
     assert df[pk].notna().all().all(), f"{table_name}: null value(s) in primary key column(s) {pk}"
     assert not df.duplicated(subset=pk).any(), f"{table_name}: duplicate primary key rows found"
 
-
 @pytest.mark.parametrize("table_name", SEASON_SCOPED_TABLES)
 def test_season_consistency(sample_frames, season_id, table_name):
     df = sample_frames[table_name]
     assert "season_id" in df.columns
     assert df["season_id"].nunique(dropna=False) == 1
     assert int(df["season_id"].iloc[0]) == season_id
-
 
 @pytest.mark.parametrize("fact_table,fk_col,dim_table,dim_pk", REFERENTIAL_INTEGRITY_CHECKS)
 def test_foreign_keys_resolve_to_dimension(sample_frames, fact_table, fk_col, dim_table, dim_pk):
@@ -107,7 +81,6 @@ def test_foreign_keys_resolve_to_dimension(sample_frames, fact_table, fk_col, di
     fact_keys = pd.to_numeric(fact_df[fk_col], errors="coerce").dropna().astype("int64")
     orphans = fact_keys[~fact_keys.isin(valid_keys)]
     assert orphans.empty, f"{fact_table}.{fk_col}: {len(orphans)} row(s) reference missing {dim_table}.{dim_pk}"
-
 
 def test_dim_seasons_and_dim_teams_business_rules(sample_frames):
     seasons = sample_frames["dim_seasons"]
@@ -119,7 +92,6 @@ def test_dim_seasons_and_dim_teams_business_rules(sample_frames):
     assert teams["team_name"].is_unique
     assert teams["team_logo_url"].notna().all()
 
-
 def test_dim_fixtures_value_bounds(sample_frames):
     df = sample_frames["dim_fixtures"]
     gw = pd.to_numeric(df["gameweek"], errors="coerce")
@@ -130,7 +102,6 @@ def test_dim_fixtures_value_bounds(sample_frames):
     assert (kickoffs.dt.year >= 1992).all() and (kickoffs.dt.year <= 2100).all()
 
     assert (pd.to_numeric(df["attendance"], errors="coerce") >= 0).all()
-
 
 def test_fact_table_value_bounds(sample_frames):
     lineup = sample_frames["fact_match_lineup"]
@@ -146,10 +117,6 @@ def test_fact_table_value_bounds(sample_frames):
     shots = sample_frames["fact_shot_events"]
     assert shots["distance"].dropna().isin(["Inside Box", "Outside Box"]).all()
 
-    # RAG-readiness regression: minute must be numeric and queryable
-    # with plain SQL comparisons (was previously a string mixing plain
-    # minutes with stoppage-time notation like "90+1'" — see
-    # test_pipeline.py's minute-parsing tests and the diagnosis report).
     for events_table in ("fact_match_events", "fact_shot_events"):
         events = sample_frames[events_table]
         minutes = pd.to_numeric(events["minute"], errors="coerce")
@@ -160,7 +127,6 @@ def test_fact_table_value_bounds(sample_frames):
     table = sample_frames["fact_premier_league_table"]
     assert table["team_id"].is_unique
     assert (pd.to_numeric(table["points"], errors="coerce") >= 0).all()
-
 
 # ---------------------------------------------------------------------
 # 2. Season label normalization
@@ -182,12 +148,10 @@ def test_season_label_normalizes_to_slug_and_name(label, expected_slug, expected
     assert parse_season_slug(label) == expected_slug
     assert parse_season_label(label) == expected_name
 
-
 def test_season_label_raises_on_unparseable_input():
     from pipelines.utils import parse_season_slug
     with pytest.raises(ValueError):
         parse_season_slug("not a season label at all")
-
 
 def test_build_dim_seasons_normalizes_the_verbose_live_label(monkeypatch):
     """The exact bug report this guards against: the live season's raw
@@ -206,11 +170,9 @@ def test_build_dim_seasons_normalizes_the_verbose_live_label(monkeypatch):
     assert row["season_name"] == "2026/27"
     assert row["competition_name"] == seasons_module.DEFAULT_COMPETITION_NAME
 
-
 def test_snapshot_season_slug_falls_back_when_dim_seasons_missing():
     from pipelines.schema import snapshot_season_slug
     assert snapshot_season_slug({}, 999) == "season_999"
-
 
 # ---------------------------------------------------------------------
 # 2b. fact_match_events player-role mapping & minute parsing (RAG-readiness fix)
@@ -248,7 +210,6 @@ def test_classify_match_event_player_roles_matches_documented_convention():
     roles = classify_match_event_player_roles("substitution", 30, 31)
     assert roles["player_on_id"] == 30 and roles["player_off_id"] == 31
 
-
 def test_parse_minute_components_handles_plain_and_stoppage_time():
     """Regression test for the reported RAG-readiness issue: minute was
     a string mixing plain minutes ('71') with stoppage-time notation
@@ -262,7 +223,6 @@ def test_parse_minute_components_handles_plain_and_stoppage_time():
     assert parse_minute_components("45+2'") == (47, True)
     assert parse_minute_components(None) == (None, False)
 
-
 # ---------------------------------------------------------------------
 # 3. FPL <-> Pulse fixture-mapping crosswalk
 # ---------------------------------------------------------------------
@@ -275,10 +235,8 @@ _PULSE_FIXTURES = [
     {"id": 90001, "kickoff": {"millis": 1787335200000}, "teams": [{"team": {"id": 100}}, {"team": {"id": 200}}]},
 ]
 
-
 def _fpl_fixture(fpl_id, team_h, team_a, kickoff_time, pulse_id):
     return {"id": fpl_id, "team_h": team_h, "team_a": team_a, "kickoff_time": kickoff_time, "pulse_id": pulse_id}
-
 
 def test_fixture_mapping_falls_back_to_composite_key_when_pulse_id_is_broken():
     """Regression test for the reported root cause: FPL's fixtures
@@ -291,14 +249,12 @@ def test_fixture_mapping_falls_back_to_composite_key_when_pulse_id_is_broken():
     mapping = build_fpl_to_pulse_fixture_map(fixtures, _PULSE_FIXTURES, _DIM_TEAMS)
     assert mapping == {1: 90001}
 
-
 def test_fixture_mapping_uses_healthy_pulse_id_directly():
     from pipelines.transform.fixtures import build_fpl_to_pulse_fixture_map
 
     fixtures = [_fpl_fixture(1, 1, 2, "2026-08-21T18:00:00Z", 90001)]
     mapping = build_fpl_to_pulse_fixture_map(fixtures, _PULSE_FIXTURES, _DIM_TEAMS)
     assert mapping == {1: 90001}
-
 
 def test_fixture_mapping_handles_empty_and_unmapped_inputs_without_raising():
     from pipelines.transform.fixtures import build_fpl_to_pulse_fixture_map
@@ -309,7 +265,6 @@ def test_fixture_mapping_handles_empty_and_unmapped_inputs_without_raising():
     fixtures = [_fpl_fixture(1, 1, 999, "2026-08-21T18:00:00Z", 0)]
     assert build_fpl_to_pulse_fixture_map(fixtures, _PULSE_FIXTURES, _DIM_TEAMS) == {}
 
-
 # ---------------------------------------------------------------------
 # 4. Historical seed loading
 # ---------------------------------------------------------------------
@@ -317,7 +272,6 @@ def test_fixture_mapping_handles_empty_and_unmapped_inputs_without_raising():
 from pathlib import Path
 
 _HISTORICAL_DIR = Path("data/historical/2025_26")
-
 
 @pytest.mark.skipif(not _HISTORICAL_DIR.exists(), reason="historical seed CSVs not present in this environment")
 def test_load_historical_frames_has_all_tables_and_passes_schema_validation():
@@ -332,7 +286,6 @@ def test_load_historical_frames_has_all_tables_and_passes_schema_validation():
         pk = list(SCHEMA[table_name].primary_key)
         assert not df.duplicated(subset=pk).any(), f"{table_name}: duplicate primary keys in historical seed"
 
-
 # ---------------------------------------------------------------------
 # 5. Archive orchestration
 # ---------------------------------------------------------------------
@@ -341,7 +294,6 @@ from unittest.mock import patch
 
 _ARCHIVE_SEASON_ID = 841
 _ARCHIVE_SEASON_SLUG = "2026_27"
-
 
 def _fake_archive_frames() -> dict[str, pd.DataFrame]:
     return {
@@ -359,7 +311,6 @@ def _make_fake_export_csv_snapshot(snapshot_root: Path):
         (snapshot_dir / "manifest.json").write_text('{"season_id": 841, "season_slug": "2026_27"}')
         return snapshot_dir
     return _fake
-
 
 @patch("pipelines.archive.export_csv_snapshot")
 @patch("pipelines.archive.snapshot_season_slug")
@@ -384,7 +335,6 @@ def test_archive_season_writes_historical_baseline(
     assert (result / "dim_seasons.csv").exists()
     assert (result / "dim_teams.csv").exists()
     mock_run_pipeline.assert_called_once_with(_ARCHIVE_SEASON_ID)
-
 
 @patch("pipelines.archive.export_csv_snapshot")
 @patch("pipelines.archive.snapshot_season_slug")
@@ -411,7 +361,6 @@ def test_archive_season_refuses_to_overwrite_existing_baseline(
         archive_season(season_id=_ARCHIVE_SEASON_ID, historical_root=historical_root, snapshot_root=snapshot_root)
 
     assert (existing_dir / "already_here.csv").read_text() == "season_id\n841\n"
-
 
 # ---------------------------------------------------------------------
 # 6. Pipeline idempotency (end-to-end, via SQLite)

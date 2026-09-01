@@ -1,50 +1,11 @@
-"""Shared fixtures for the whole test suite.
-
-Design principle for this consolidated suite: `python -m pytest -v`
-must pass with zero external setup — no live network calls to
-PulseLive/FPL, no real Postgres, no Docker. Every fixture here is
-either pure Python/pandas, or backed by an in-memory SQLite engine.
-
-This is a deliberate change from the previous (pre-consolidation) test
-suite, which defaulted to running the *live* pipeline against real
-PulseLive/FPL APIs unless a `--test-from-snapshot` flag was passed.
-That made the suite an integration harness, not something you could run
-unattended in CI without network egress. Genuine live/E2E validation
-against the real APIs still happens via `debug_pipeline.ipynb` or a
-manual `python -m pipelines.run_live` — this suite is about the
-correctness of the logic and contracts, which doesn't need live data to
-verify.
-
-Fixture map:
-- `sample_frames`   -> a small, hand-built, already-materialized
-                       `{table_name: DataFrame}` dict satisfying every
-                       PK/FK/business-rule constraint in `schema.SCHEMA`,
-                       used by `test_pipeline.py`.
-- `raw_team_frame_missing_audit_columns`
-                    -> one dim_teams-shaped row with no ingested_at/
-                       updated_at, simulating a pre-audit-column
-                       historical CSV. Used by `test_warehouse.py`.
-- `sqlite_engine`   -> a fresh in-memory SQLite engine per test
-                       (StaticPool, so it's a single persistent
-                       connection - the standard pattern for in-memory
-                       SQLite across multiple `engine.connect()` calls
-                       within one test). Used by `test_warehouse.py` and
-                       `test_pipeline.py`'s idempotency test.
-- `client`          -> FastAPI TestClient with `get_connection`
-                       overridden to a `FakeConnection` backed by
-                       `fake_api_data`. Used by `test_api.py`.
-"""
-
 import pandas as pd
 import pytest
-
 
 # ---------------------------------------------------------------------
 # sample_frames: one small, internally-consistent mini-season
 # ---------------------------------------------------------------------
 
 SAMPLE_SEASON_ID = 841
-
 
 def _build_sample_frames() -> dict[str, pd.DataFrame]:
     """Four teams, six players, a round-robin's worth of fixtures (some
@@ -165,7 +126,6 @@ def _build_sample_frames() -> dict[str, pd.DataFrame]:
 
     return frames
 
-
 @pytest.fixture(scope="session")
 def season_id() -> int:
     return SAMPLE_SEASON_ID
@@ -178,7 +138,6 @@ def sample_frames() -> dict[str, pd.DataFrame]:
     a test always rebinds a name / uses .copy(), never `df[...] = ...`
     on this fixture's frames directly)."""
     return _build_sample_frames()
-
 
 # ---------------------------------------------------------------------
 # Audit-harmonization raw fixture (pre-audit-column CSV shape)
@@ -194,7 +153,6 @@ def raw_team_frame_missing_audit_columns() -> pd.DataFrame:
     return pd.DataFrame([
         {"team_id": 1, "team_name": "Harmonized United", "short_name": "HAR", "team_logo_url": "https://example.com/logo.png"}
     ])
-
 
 # ---------------------------------------------------------------------
 # In-memory SQLite engine
@@ -241,7 +199,6 @@ def sqlite_engine():
     finally:
         engine.dispose()
 
-
 # ---------------------------------------------------------------------
 # FastAPI TestClient, backed by a fake DB connection
 # ---------------------------------------------------------------------
@@ -265,7 +222,6 @@ class _FakeResult:
     def __iter__(self):
         from types import SimpleNamespace
         return iter(SimpleNamespace(_mapping=row) for row in self._rows)
-
 
 class FakeConnection:
     """Fakes just enough of `sqlalchemy.engine.Connection.execute` to
@@ -306,7 +262,6 @@ class FakeConnection:
 
         return _FakeResult([])
 
-
 @pytest.fixture
 def fake_api_data() -> dict:
     from datetime import date, datetime
@@ -340,7 +295,6 @@ def fake_api_data() -> dict:
             }
         ],
     }
-
 
 @pytest.fixture
 def client(fake_api_data):
