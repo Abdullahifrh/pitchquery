@@ -10,3 +10,4 @@ pytest>=8.0
 pytest-html>=4.0
 tqdm>=4.66
 httpx>=0.28
+google-genai>=1.0
