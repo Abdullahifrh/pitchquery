@@ -43,6 +43,54 @@
 
 
 -- =============================================================================
+-- Table catalog — one-line purpose per table. This block exists so the RAG
+-- engine's schema context can start compact (just these 12 lines) rather
+-- than dumping every column of every table on every question, then pull
+-- full column-level detail only for the specific table(s) a given question
+-- actually needs (see rag/schema_context.py's describe_table). Add a line
+-- here whenever a new warehouse table is created.
+-- =============================================================================
+
+COMMENT ON TABLE warehouse.dim_seasons IS
+'One row per Premier League season (e.g. 2025/26). Reference dimension for season-scoped queries.';
+
+COMMENT ON TABLE warehouse.dim_teams IS
+'One row per Premier League club. Reference dimension for team-scoped queries and name/alias resolution.';
+
+COMMENT ON TABLE warehouse.dim_players IS
+'One row per player. Reference dimension for player-scoped queries and name resolution.';
+
+COMMENT ON TABLE warehouse.dim_fixtures IS
+'One row per scheduled match (fixture), including kickoff time and status. Central table for any date/match-scoped question.';
+
+COMMENT ON TABLE warehouse.bridge_player_seasons IS
+'One row per player per club spell within a season - resolves which team a player belonged to at a given point, including mid-season transfers.';
+
+COMMENT ON TABLE warehouse.fact_match_events IS
+'One row per goal, card, or substitution event within a match, with the exact minute and the player(s)/team involved. Use for event-level questions (who scored, who was carded, when).';
+
+COMMENT ON TABLE warehouse.fact_shot_events IS
+'One row per shot attempt (goal, save, block, miss) within a match, including shot origin (open play/set piece/penalty), body part, and location. Use for shot-quality/shot-origin questions.';
+
+COMMENT ON TABLE warehouse.fact_match_lineup IS
+'One row per player per fixture they were named in, including starter/substitute status and minutes played in that specific match.';
+
+COMMENT ON TABLE warehouse.fact_player_season_stats IS
+'One row per player per season: season-aggregate stats (goals, assists, shots, tackles, per-90 rates, xG/xGI). The main table for "how good was player X this season" questions.';
+
+COMMENT ON TABLE warehouse.fact_team_match_stats IS
+'One row per team per fixture: that match''s result, goals scored/conceded, and detailed match stats (possession, shots, etc.) for that team in that game.';
+
+COMMENT ON TABLE warehouse.fact_team_season_stats IS
+'One row per team per season: season-aggregate team stats, the team-level equivalent of fact_player_season_stats.';
+
+COMMENT ON TABLE warehouse.fact_premier_league_table IS
+'One row per team per season - the current standings snapshot, overwritten after every gameweek (primary key is team_id + season_id, so there is no per-gameweek history here; this table cannot answer "where were they after gameweek N", only the position as of the most recent completed gameweek).
+For a plain "show me the [Premier League] table/standings" request with no other qualifiers, return exactly these columns per team, in this order: team_name, matches_played AS "MP", wins AS "W", draws AS "D", losses AS "L", goals_for AS "GF", goals_against AS "GA", goals_difference AS "GD", points AS "Pts" - ordered by points DESC, goals_difference DESC, goals_for DESC (see the points column for why this is the tiebreak order). Do not include the home_/away_ split or xg/xga/xgd columns unless the question specifically asks about home form, away form, or expected goals.';
+-- =============================================================================
+
+
+-- =============================================================================
 -- dim_seasons
 -- =============================================================================
 
@@ -409,7 +457,7 @@ GI (Goal Involvements): GI = goals + goal_assist. See the goals column for the f
 Per 90: assists_per_90 = goal_assist * 90.0 / NULLIF(mins_played, 0). See mins_played for the qualifying-minutes convention before reporting this rate.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.goal_assist_deadball IS
-'Assists specifically from a dead-ball situation (e.g. a corner or free kick delivery), a subset already included in goal_assist.';
+'Assists specifically from a dead-ball situation (e.g. a corner or free kick delivery), a subset already included in goal_assist. Synonym: "assists from set pieces" - a set-piece assist is one where the delivery itself was a corner, free kick, or other qualifying dead-ball event, excluding penalties. This is the season-aggregate column for that definition; do not derive "set-piece assists" from fact_shot_events.shot_type = ''Set Piece'' instead, which classifies the resulting shot''s own origin, not the assisting delivery, and is a different (and generally smaller) count.';
 
 COMMENT ON COLUMN warehouse.fact_player_season_stats.total_att_assist IS
 'Total "attempted assists" — passes that led to a shot attempt, whether or not that shot resulted in a goal (a superset of goal_assist).';

@@ -19,14 +19,15 @@ def _extract_target_columns(sql_text: str) -> set[tuple[str, str]]:
 
 def _split_statements(sql_text: str) -> list[str]:
     """Splits the migration file into individual, complete
-    `COMMENT ON COLUMN ... IS '...';` statements."""
-    return re.findall(r"(COMMENT ON COLUMN .*?IS\n'.*?';)", sql_text, re.DOTALL)
+    `COMMENT ON COLUMN ... IS '...';` and `COMMENT ON TABLE ... IS '...';`
+    statements."""
+    return re.findall(r"(COMMENT ON (?:COLUMN|TABLE) .*?IS\n'.*?';)", sql_text, re.DOTALL)
 
 def apply_migration(engine, migration_path: Path = MIGRATION_PATH) -> None:
     """Executes the migration one statement at a time."""
     sql_text = migration_path.read_text()
     statements = _split_statements(sql_text)
-    print(f"[APPLY] Running {migration_path} ({len(statements)} column comments)...")
+    print(f"[APPLY] Running {migration_path} ({len(statements)} comments)...")
 
     with engine.begin() as conn:
         for i, statement in enumerate(statements, start=1):
