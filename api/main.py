@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends
 from sqlalchemy.engine import Connection
 from api.db import get_connection
 from api.repositories.base import count_rows, fetch_latest_season
-from api.routers import teams, players, fixtures
+from api.routers import teams, players, fixtures, chat
 from api.schemas import HealthOut
 
 app = FastAPI(title="PitchQuery API", version="1.0.0")
@@ -11,6 +11,7 @@ app = FastAPI(title="PitchQuery API", version="1.0.0")
 app.include_router(teams.router, prefix="/api/v1/teams", tags=["teams"])
 app.include_router(players.router, prefix="/api/v1/players", tags=["players"])
 app.include_router(fixtures.router, prefix="/api/v1/fixtures", tags=["fixtures"])
+app.include_router(chat.router, prefix="/api/v1/chat", tags=["chat"])
 
 @app.get("/health", response_model=HealthOut)
 def health(conn: Connection = Depends(get_connection)):

@@ -1,5 +1,5 @@
 from datetime import date, datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 class HealthOut(BaseModel):
     status: str
@@ -31,3 +31,11 @@ class FixtureOut(BaseModel):
     home_team_id: int | None = None
     away_team_id: int | None = None
     fixture_status: str | None = None
+
+class ChatIn(BaseModel):
+    question: str = Field(min_length=1)
+
+class ChatOut(BaseModel):
+    answer: str
+    sql: str | None = None
+    has_sql: bool
